@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: 'Figtree', system-ui, sans-serif;
+
+    --transparent-200: #181818dc;
+    --transparent-100: #00000001;
+
+    --color-black-1000: #000000;
+    --color-black-800: #1a1a1a;
+    --color-black-700: #333333;
+    --color-black-600: #4d4d4d;
+    --color-black-500: #666666;
+    --color-black-400: #989898;
+
+    --color-blue-100: aqua;
+
+    --color-violet-1000: #240e46;
+    --color-violet-950: #221632;
+    --color-violet-900: #351467;
+    --color-violet-800: #5b21b6;
+    --color-violet-700: #6d28d9;
+    --color-violet-600: #7c3aed;
+    --color-violet-500: #8b5cf6;
+    --color-violet-400: #a78bfa;
+    --color-violet-300: #c4b5fd;
+    --color-violet-200: #ddd6fe;
+    --color-violet-100: #ede9fe;
+    --color-violet-50: #f5f3ff;
+}
+
+body {
+  /* font-family: var(--font-sans); */
+  color: white;
+}
+
+.input {
+  border: 0.5px solid rgb(62, 62, 62);
+  padding: 8px 15px;
+  background-color: #9b7f7f;
+  border-radius: 4px;
+  color: white;
+}
+
+/* 
+h1, h2, h3, h4 {
+    font-family: "Press Start 2P", system-ui;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+p, h5 {
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+*/
