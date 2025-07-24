@@ -1,4 +1,49 @@
+import { useEffect, useState } from 'react';
+
 export default function Gallery() {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [creator, setName] = useState(null);
+
+    useEffect(() => {
+        fetch('src/data/assets.json')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch');
+                }
+                return response.json();
+            })
+            .then((json) => {
+                setData(json);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, []);
+
+    function get_creator(id) {
+       
+        fetch('src/data/creators.json')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch');
+                }
+                return response.json(); 
+            })
+            .then((data) => {
+                const foundItem = data.find(item => item.id === id);
+                setName(foundItem.name)
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+            return creator
+    }
+
     return (
         <>
             <div
@@ -43,23 +88,36 @@ export default function Gallery() {
             {/* <div className="h-full bg-violet-1000 pb-[100px]"> */}
             <div className="bg-gray-50 relative text-black/50 bg-violet-1000 dark:text-white/50 h-full flex flex-col justify-start items-center pb-[100px]">
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
-                    {Array.from({ length: 12 }, (_, i) => (
+                    {data.map((asset) => (
                         <div className="max-w-xs border border-gray-200 rounded-lg shadow-sm bg-violet-950 dark:border-gray-700">
                             <a href="#">
-                                <img className="rounded-t-lg" src='/Pixel Art background Violet theme nature (1).jpg' alt="Image" />
+                                <img className="rounded-t-lg" src={asset.url} alt="Image" />
                             </a>
                             <div className="p-5">
                                 <a href="#">
-                                    <h5 className="mb-2 text-[16px] font-bold tracking-tight text-black-500 dark:text-white">Noteworthy technology acquisitions 2021</h5>
+                                    <h5 className="mb-2 text-[20px] font-bold tracking-tight text-black-500 dark:text-white">{asset.title}</h5>
                                 </a>
 
-                                <a href="#" className="inline-flex items-center  text-sm font-medium text-center text-black-500">
+                                <div className="flex flex-col">
+                                    <span className="bg-green-100 w-fit text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                        {asset.tags}
+                                    </span>
+
+                                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-[10px]">
+                                        <p>By: {get_creator(asset.creator)}</p>
+                                        <p>License: Open Font License</p>
+                                    </div>
+                                </div>
+
+                                {/* <a href="#" className="inline-flex items-center  text-sm font-medium text-center text-black-500">
                                     Read more
                                     <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" alt="test" viewBox="0 0 14 10">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                                     </svg>
-                                </a>
+                                </a> */}
                             </div>
+
+
                         </div>
                     ))}
                 </div>

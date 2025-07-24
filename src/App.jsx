@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/fonts" element={<Fonts />} />
         <Route path="/ai" element={<AI />} />
-        <Route path="/works" element={<CreatorsWorks />} />
+        <Route path="/works/:id" element={<CreatorsWorks />} />
       </Routes>
     </MainLayout>
   );

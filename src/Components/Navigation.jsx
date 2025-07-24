@@ -12,7 +12,7 @@ export default function Navigation() {
         <nav className="border-gray-200 bg-black-800">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="public/BitByBit.png" className="h-8" alt="PixelForge Logo" />
+                    <img src="/PixelForge.png" className="h-8" alt="PixelForge Logo" />
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                         PixelForge
                     </span>
@@ -60,6 +60,7 @@ export default function Navigation() {
                                 className="z-10 hidden absolute left-0 mt-2 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-violet-1000 dark:divide-gray-600"
                             >
                                 <ul className="py-2 text-sm">
+                                    <li><Link to="/gallery" className="block py-2 px-3">Pack</Link></li>
                                     <li><Link to="/gallery" className="block py-2 px-3">Sprites</Link></li>
                                     <li><Link to="/gallery" className="block py-2 px-3">Tilesets</Link></li>
                                     <li><Link to="/gallery" className="block py-2 px-3">Backgrounds</Link></li>

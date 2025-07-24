@@ -1,6 +1,27 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Creators() {
+
+    const [creators, setCreator] = useState([]) 
+
+    useEffect(() => {
+        fetch('/src/data/creators.json')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error occured');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setCreator(data);
+            })
+            .catch((error) => {
+                console.error('Error occured: ', error);
+            });
+    }, []);
+
     return (
         <>
             <div
@@ -33,18 +54,19 @@ export default function Creators() {
 
             <div className="bg-gray-50 relative text-black/50 bg-violet-1000 dark:text-white/50 h-full flex flex-row flex-wrap justify-start items-center pb-[100px]">
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
-                    {Array.from({ length: 12 }, (_, i) => (
-                        <Link to="/works" className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-violet-950 dark:hover:bg-violet-900">
-                            <img class="object-cover w-full rounded-t-lg h-full md:h-full md:w-48 md:rounded-none md:rounded-s-lg" src="/Pixel Art background Violet theme nature (1).jpg" alt="" />
+                    {creators.map((creator) => (
+                        <Link to={`/works/${creator.id}`} className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-violet-950 dark:hover:bg-violet-900">
+                            <img className="object-cover w-full rounded-t-lg h-full md:h-full md:w-48 md:rounded-none md:rounded-s-lg" src="/Pixel Art background Violet theme nature (1).jpg" alt="" />
                             <div className="flex flex-col justify-between p-4 leading-normal">
-                                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Bloxal</h5>
-                                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                                <span className="bg-blue-500 text-white px-[15px] rounded-full w-fit">Background</span>
+                                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{creator.name}</h5>
+                                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{creator.description}</p>
+                                {/* <span className="bg-green-100 w-fit text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                    Background
+                                </span> */}
                             </div>
                         </Link>
                     ))}
                 </div>
-
             </div>
 
         </>

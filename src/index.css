@@ -27,19 +27,33 @@
     --color-violet-200: #ddd6fe;
     --color-violet-100: #ede9fe;
     --color-violet-50: #f5f3ff;
+
+    --animate-float: float 3s ease-in-out infinite;
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
 }
 
 body {
-  /* font-family: var(--font-sans); */
-  color: white;
+    /* font-family: var(--font-sans); */
+    color: white;
 }
 
 .input {
-  border: 0.5px solid rgb(62, 62, 62);
-  padding: 8px 15px;
-  background-color: #9b7f7f;
-  border-radius: 4px;
-  color: white;
+    border: 0.5px solid rgb(62, 62, 62);
+    padding: 8px 15px;
+    background-color: #9b7f7f;
+    border-radius: 4px;
+    color: white;
 }
 
 /* 
