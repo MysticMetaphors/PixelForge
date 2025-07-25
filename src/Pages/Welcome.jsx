@@ -66,8 +66,8 @@ export default function Welcome() {
 
                 <div className="flex flex-col justify-center items-center h-full pt-[100px]">
                     <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-                        <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white"> Helping creators craft their worlds</h1>
-                        <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-200">
+                        <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl text-white"> Helping creators craft their worlds</h1>
+                        <p className="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200">
                             At PixelForge we showcase free pixel art assets and AI models shared by their rightful creators, helping developers, artists, and hobbyists craft immersive games and unlock their creative potential.
                         </p>
 
@@ -106,16 +106,16 @@ export default function Welcome() {
                             <ContentLoader></ContentLoader>
                         ))
                     ) : (ai_models.map((ai) => (
-                    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
+                    <div className="max-w-sm p-6 border rounded-lg shadow-sm bg-violet-950 border-gray-700">
                         <Link to={ai.link}>
-                            <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{ai.name}</h5>
+                            <h5 className="mb-2 text-2xl font-semibold tracking-tight text-white">{ai.name}</h5>
                         </Link>
-                        <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">{ai.description}</p>
+                        <p className="mb-3 font-normal ext-gray-400">{ai.description}</p>
                     </div>
                 )))}
             </div>
 
-            <div className="bg-gray-50 relative text-black/50 bg-violet-1000 dark:text-white/50 h-full pl-auto pr-auto flex flex-col justify-start items-center p-[100px]">
+            <div className="bg-gray-50 relative bg-violet-1000 text-white/50 h-full pl-auto pr-auto flex flex-col justify-start items-center p-[100px]">
                 <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[200px] left-[100px]" />
                 <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[50%] right-[100px]" />
                 <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[80%] left-[100px]" />
@@ -125,28 +125,28 @@ export default function Welcome() {
                             <CardLoader></CardLoader>
                         ))
                     ) : (assets.map((asset) => (
-                        <div className="max-w-xs bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
+                        <div className="max-w-xs border border-gray-200 rounded-lg shadow-sm bg-violet-950 border-gray-700">
                             <a href="#">
                                 <img className="rounded-t-lg" src={asset.url} alt="Image" />
                             </a>
                             <div className="p-5">
                                 <a href="#">
-                                    <h5 className="mb-2 text-[20px] font-bold tracking-tight text-black-500 dark:text-white">{asset.title}</h5>
+                                    <h5 className="mb-2 text-[20px] font-bold tracking-tight text-white">{asset.title}</h5>
                                 </a>
 
                                 <div className="flex flex-col">
                                     <div className="flex-row">
-                                        <span className="bg-green-100 w-fit text-green-800 font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 mr-[8px]">
+                                        <span className=" w-fit font-medium px-2.5 py-0.5 rounded bg-green-900 text-green-300 mr-[8px]">
                                             {asset.tags}
                                         </span>
                                         {asset.generated != false && (
-                                            <span className="bg-blue-900 w-fit text-blue-300  font-medium px-2.5 py-0.5 rounded">
+                                            <span className="bg-blue-900 w-fit text-blue-300 font-medium px-2.5 py-0.5 rounded">
                                                 AI
                                             </span>
                                         )}
                                     </div>
 
-                                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-[10px]">
+                                    <div className="text-sm text-gray-400 mt-[10px]">
                                         {get_creator(asset.creator)}
                                         <p>License: Open Font License</p>
                                     </div>

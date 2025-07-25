@@ -19,7 +19,7 @@ export default function Navigation() {
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src="/PixelForge.png" className="h-8" alt="PixelForge Logo" />
-                    <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+                    <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
                         PixelForge
                     </span>
                 </Link>
@@ -27,7 +27,7 @@ export default function Navigation() {
                 <button
                     data-collapse-toggle="navbar-multi-level"
                     type="button"
-                    className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
                     aria-controls="navbar-multi-level"
                     aria-expanded="false"
                     onClick={toggleNavigation}
@@ -51,7 +51,7 @@ export default function Navigation() {
                 </button>
 
                 <div className="hidden w-full md:block md:w-auto" id="navbar-multi-level">
-                    <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:border-gray-700">
+                    <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 border-gray-700">
                         <li>
                             <Link to="/" className="block py-2 px-3 hover:bg-violet-900">Home</Link>
                         </li>
@@ -64,7 +64,7 @@ export default function Navigation() {
                             </button>
                             <div
                                 id="dropdownNavbar"
-                                className="z-10 hidden md:absolute md:bg-violet-1000 left-0 mt-2 font-normal divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:divide-gray-600"
+                                className="z-10 hidden md:absolute md:bg-violet-1000 left-0 mt-2 font-normal divide-y rounded-lg shadow-sm w-44 divide-gray-600"
                             >
                                 <ul className="md:py-2 md:px-0 px-5 py-0 md:text-sm text-normal">
                                     <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Pack</Link></li>
