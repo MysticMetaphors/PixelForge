@@ -46,17 +46,31 @@ export default function Fonts() {
 
             <div className="h-full bg-violet-1000 pb-[100px] flex flex-wrap justify-center gap-[20px]">
                 {Array.from({ length: 12 }, (_, i) => (
-                    <div className="max-w-sm p-4 bg-violet-950 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
-                        <h2 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Press Start 2P</h2>
+                    <div className="max-w-xs border border-gray-200 rounded-lg shadow-sm bg-violet-950 dark:border-gray-700">
+                        <a href="#">
+                            <img className="rounded-t-lg" src='/Pixel Art Backgroun scenery.jpg' alt="Image" />
+                        </a>
+                        <div className="p-5">
+                            <a href="#">
+                                <h5 className="mb-2 text-[20px] font-bold tracking-tight text-black-500 dark:text-white"></h5>
+                            </a>
 
-                        <p className="text-lg mb-4">
-                            The quick brown fox jumps over the lazy dog
-                        </p>
+                            <div className="flex flex-col">
+                                <div className="text-sm text-gray-600 dark:text-gray-400 mt-[10px]">
+                                    <p>By: Google Fonts</p>
+                                    <p>License: Open Font License</p>
+                                </div>
+                            </div>
 
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                            <p>By: Google Fonts</p>
-                            <p>License: Open Font License</p>
+                            {/* <a href="#" className="inline-flex items-center  text-sm font-medium text-center text-black-500">
+                                    Read more
+                                    <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" alt="test" viewBox="0 0 14 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                    </svg>
+                                </a> */}
                         </div>
+
+
                     </div>
                 ))}
             </div>

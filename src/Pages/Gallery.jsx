@@ -1,47 +1,35 @@
 import { useEffect, useState } from 'react';
+import SkeletonLoad from '../Components/SkeletonLoad';
 
 export default function Gallery() {
     const [data, setData] = useState([]);
+    const [creator, setCreators] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [creator, setName] = useState(null);
 
     useEffect(() => {
-        fetch('src/data/assets.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch');
-                }
+        Promise.all([
+            fetch('src/data/assets.json').then((response) => {
+                if (!response.ok) throw new Error('Failed to fetch assets');
                 return response.json();
-            })
-            .then((json) => {
-                setData(json);
-                setLoading(false);
+            }),
+            fetch('src/data/creators.json').then((response) => {
+                if (!response.ok) throw new Error('Failed to fetch creators');
+                return response.json();
+            }),
+        ])
+            .then(([assets, creators]) => {
+                setData(assets);
+                setCreators(creators);
+                setLoading(false)
             })
             .catch((err) => {
-                setError(err.message);
-                setLoading(false);
+                console.error(err);
             });
     }, []);
 
     function get_creator(id) {
-       
-        fetch('src/data/creators.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch');
-                }
-                return response.json(); 
-            })
-            .then((data) => {
-                const foundItem = data.find(item => item.id === id);
-                setName(foundItem.name)
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
-            return creator
+        const findItem = creator.find((item) => item.id == id)
+        return <p>By: {findItem.name ?? 'Error Occured'}</p>
     }
 
     return (
@@ -88,7 +76,11 @@ export default function Gallery() {
             {/* <div className="h-full bg-violet-1000 pb-[100px]"> */}
             <div className="bg-gray-50 relative text-black/50 bg-violet-1000 dark:text-white/50 h-full flex flex-col justify-start items-center pb-[100px]">
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
-                    {data.map((asset) => (
+                    {loading ? (
+                        Array.from({ length: 8 }, (_, i) => (
+                            <SkeletonLoad></SkeletonLoad>
+                        ))
+                    ) : (data.map((asset) => (
                         <div className="max-w-xs border border-gray-200 rounded-lg shadow-sm bg-violet-950 dark:border-gray-700">
                             <a href="#">
                                 <img className="rounded-t-lg" src={asset.url} alt="Image" />
@@ -99,12 +91,20 @@ export default function Gallery() {
                                 </a>
 
                                 <div className="flex flex-col">
-                                    <span className="bg-green-100 w-fit text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                        {asset.tags}
-                                    </span>
+                                    <div className="flex-row">
+                                        <span className="bg-green-100 w-fit text-green-800 font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 mr-[8px]">
+                                            {asset.tags}
+                                        </span>
+                                        {asset.generated != false && (
+                                            <span className="bg-blue-900 w-fit text-blue-300  font-medium px-2.5 py-0.5 rounded">
+                                                AI
+                                            </span>
+                                        )}
+                                    </div>
+
 
                                     <div className="text-sm text-gray-600 dark:text-gray-400 mt-[10px]">
-                                        <p>By: {get_creator(asset.creator)}</p>
+                                        {get_creator(asset.creator)}
                                         <p>License: Open Font License</p>
                                     </div>
                                 </div>
@@ -119,9 +119,12 @@ export default function Gallery() {
 
 
                         </div>
-                    ))}
+                    ))
+                    )}
                 </div>
-                <button className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white'>See More</button>
+                {data.length > 12 && (
+                    <button className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white cursor-pointer'>See More</button>
+                )}
             </div>
 
         </>

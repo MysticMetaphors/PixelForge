@@ -1,47 +1,54 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import SkeletonLoad from "../Components/SkeletonLoad";
 
 export default function Welcome() {
 
     function goToGallery() {
-        router.visit(route('gallery'))
+        window.location.href = "/gallery";
+    }
+
+    function goToAbout() {
+        window.location.href = "/about";
     }
 
     const [assets, setAsset] = useState([])
     const [creator, setCreator] = useState(null)
-
-    // Fetch assets once when the component mounts
+    const [ai_models, setModels] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('src/data/assets.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Error occured");
-                }
-                return response.json()
+        Promise.all([
+            fetch('src/data/assets.json').then(res => {
+                if (!res.ok) throw new Error("Failed to fetch assets");
+                return res.json();
+            }),
+            fetch('src/data/creators.json').then(res => {
+                if (!res.ok) throw new Error("Failed to fetch creators");
+                return res.json();
+            }),
+            fetch('src/data/ai.json').then(res => {
+                if (!res.ok) throw new Error("Failed to fetch AI models");
+                return res.json();
             })
-            .then((data) => {
-                setAsset(data)
+        ])
+            .then(([assetsData, creatorsData, modelsData]) => {
+                setAsset(assetsData.slice(0, 12));
+                setCreator(creatorsData);
+                setModels(modelsData.slice(0, 5));
+                setLoading(false)
+                console.log('All data fetched');
             })
             .catch((error) => {
-                console.error(error);
-            })
+                console.error("Error loading data:", error);
+            });
     }, []);
 
-    function get_creator(id) {
-        fetch('src/data/creators.json')
-            .then((response)=> {
-                 if (!response.ok) {
-                throw new Error("Error occured");
-            }
-            return response.json()
-            })
-            .then((data)=> {
-                const creator = data.find((item) => item.id == id)
-                setCreator(creator.name)
-            })
 
-        return creator
+    function get_creator(id) {
+        const findItem = creator.find((item) => item.id == id)
+        return <p>By: {findItem.name}</p>
     }
 
     return (
@@ -75,7 +82,7 @@ export default function Welcome() {
                                 </div>
                             </form>
                         </div> */}
-                        <div className="flex justify-center mt-4">
+                        <div className="flex justify-center mt-4" onClick={goToAbout}>
                             <a
                                 href='#'
                                 className="bg-violet-900 py-[8px] px-[15px] text-white flex gap-[5px] w-fit items-center"
@@ -93,36 +100,18 @@ export default function Welcome() {
             </div>
 
             <div className='bg-violet-1000 flex flex-row flex-wrap gap-[20px] justify-center pt-[100px]'>
-                <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
-                    <a href="#">
-                        <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Bloxal</h5>
-                    </a>
-                    <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">Go to this step by step guideline process on how to certify for your weekly benefits:</p>
-                </div>
-                <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
-                    <a href="#">
-                        <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Bloxal</h5>
-                    </a>
-                    <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">Go to this step by step guideline process on how to certify for your weekly benefits:</p>
-                </div>
-                <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
-                    <a href="#">
-                        <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Bloxal</h5>
-                    </a>
-                    <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">Go to this step by step guideline process on how to certify for your weekly benefits:</p>
-                </div>
-                <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
-                    <a href="#">
-                        <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Bloxal</h5>
-                    </a>
-                    <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">Go to this step by step guideline process on how to certify for your weekly benefits:</p>
-                </div>
-                <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
-                    <a href="#">
-                        <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Bloxal</h5>
-                    </a>
-                    <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">Go to this step by step guideline process on how to certify for your weekly benefits:</p>
-                </div>
+                {loading ? (
+                        Array.from({ length: 5 }, (_, i) => (
+                            <SkeletonLoad></SkeletonLoad>
+                        ))
+                    ) : (ai_models.map((ai) => (
+                    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
+                        <Link to={ai.link}>
+                            <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{ai.name}</h5>
+                        </Link>
+                        <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">{ai.description}</p>
+                    </div>
+                )))}
             </div>
 
             <div className="bg-gray-50 relative text-black/50 bg-violet-1000 dark:text-white/50 h-full pl-auto pr-auto flex flex-col justify-start items-center p-[100px]">
@@ -130,7 +119,11 @@ export default function Welcome() {
                 <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[50%] right-[100px]" />
                 <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[80%] left-[100px]" />
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
-                    {assets.map((asset) => (
+                    {loading ? (
+                        Array.from({ length: 9 }, (_, i) => (
+                            <SkeletonLoad></SkeletonLoad>
+                        ))
+                    ) : (assets.map((asset) => (
                         <div className="max-w-xs bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
                             <a href="#">
                                 <img className="rounded-t-lg" src={asset.url} alt="Image" />
@@ -141,12 +134,19 @@ export default function Welcome() {
                                 </a>
 
                                 <div className="flex flex-col">
-                                    <span className="bg-green-100 w-fit text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                        {asset.tags}
-                                    </span>
+                                    <div className="flex-row">
+                                        <span className="bg-green-100 w-fit text-green-800 font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 mr-[8px]">
+                                            {asset.tags}
+                                        </span>
+                                        {asset.generated != false && (
+                                            <span className="bg-blue-900 w-fit text-blue-300  font-medium px-2.5 py-0.5 rounded">
+                                                AI
+                                            </span>
+                                        )}
+                                    </div>
 
                                     <div className="text-sm text-gray-600 dark:text-gray-400 mt-[10px]">
-                                        <p>By: {get_creator(asset.creator)}</p>
+                                        {get_creator(asset.creator)}
                                         <p>License: Open Font License</p>
                                     </div>
                                 </div>
@@ -159,10 +159,11 @@ export default function Welcome() {
                                 </a> */}
                             </div>
                         </div>
-                    ))}
-
+                    )))}
                 </div>
-                <button className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white' onClick={goToGallery}>See More</button>
+                {assets.length > 9 && (
+                    <button onClick={goToGallery} className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white cursor-pointer'>See More</button>
+                )}
             </div>
         </>
     );

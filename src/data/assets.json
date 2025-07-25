@@ -4,48 +4,55 @@
         "title": "Scenery",
         "creator": 1,
         "tags": "Background",
-        "url": "/Pixel Art Backgroun scenery (1).jpg"
+        "url": "/Pixel Art Backgroun scenery (1).jpg",
+        "generated": true
     },
     {
         "id": 2,
         "title": "Scenery",
         "creator": 1,
         "tags": "Background",
-        "url": "/Pixel Art Backgroun scenery.jpg"
+        "url": "/Pixel Art Backgroun scenery.jpg",
+        "generated": true
     },
     {
         "id": 3,
         "title": "Scenery",
         "creator": 1,
         "tags": "Background",
-        "url": "/Pixel Art background Violet theme nature (1).jpg"
+        "url": "/Pixel Art background Violet theme nature (1).jpg",
+        "generated": true
     },
     {
         "id": 4,
         "title": "Scenery",
         "creator": 1,
         "tags": "Background",
-        "url": "/Pixel Art background Violet theme nature (2).jpg"
+        "url": "/Pixel Art background Violet theme nature (2).jpg",
+        "generated": true
     },
     {
         "id": 5,
         "title": "Scenery",
         "creator": 1,
         "tags": "Background",
-        "url": "/Pixel Art background Violet theme nature.jpg"
+        "url": "/Pixel Art background Violet theme nature.jpg",
+        "generated": true
     },
     {
         "id": 6,
         "title": "Scenery",
         "creator": 2,
         "tags": "Background",
-        "url": "/7481714.jpg"
+        "url": "/7481714.jpg",
+        "generated": true
     },
     {
         "id": 7,
         "title": "Scenery",
         "creator": 2,
         "tags": "Background",
-        "url": "/Pixel Art Backgroun scenery (1).jpg"
+        "url": "/Pixel Art Backgroun scenery (1).jpg",
+        "generated": true
     }
 ]

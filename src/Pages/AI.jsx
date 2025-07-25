@@ -1,4 +1,26 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 export default function AI() {
+
+    const [ai_models, setModel] = useState([])
+
+    useEffect(() => {
+        fetch('/src/data/ai.json')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('An Error Occured!')
+                }
+                return response.json()
+            })
+            .then((data) => {
+                setModel(data)
+            })
+            .catch((error) => {
+                console.error('An Error Occured: ', error)
+            })
+    }, [])
+
     return (
         <>
             <div
@@ -22,7 +44,7 @@ export default function AI() {
                                 <input type="text" id="email-address-icon" className="bg-black-700 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
                             </div>
 
-                            <select name="" id="" className="bg-black-700 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5  dark:border-gray-600 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            {/* <select name="" id="" className="bg-black-700 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5  dark:border-gray-600 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option hidden selected value="">Category</option>
                                 <option value="">All</option>
                                 <option value="retro">Retro / Pixel Art</option>
@@ -31,7 +53,7 @@ export default function AI() {
                                 <option value="horror">Horror / Thriller</option>
                                 <option value="racing">Racing / Sports</option>
                                 <option value="casual">Casual / Puzzle / Kids</option>
-                            </select>
+                            </select> */}
                         </form>
 
 
@@ -41,34 +63,38 @@ export default function AI() {
             </div>
 
             <div className="h-full bg-violet-1000 pb-[100px] flex flex-wrap justify-center gap-[20px]">
-                {Array.from({ length: 12 }, (_, i) => (
-                    <div className="max-w-sm bg-violet-950 border border-gray-200 dark:border-gray-700 rounded-lg shadow p-4">
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                            Stable Diffusion
+                {ai_models.map((ai) => (
+                    <div className="flex flex-col max-w-sm bg-violet-950 border border-gray-200 dark:border-gray-700 rounded-lg shadow p-4">
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                            {ai.name}
                         </h3>
 
-                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                            A state-of-the-art text-to-image model for generating high-quality images from natural language prompts.
+                        <p className="text-gray-600 dark:text-gray-300 mb-4 font-normal">
+                            {ai.description}
                         </p>
 
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            <span className="bg-violet-100 text-violet-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-violet-900 dark:text-violet-300">
-                                Text-to-Image
-                            </span>
-                            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                Open Source
-                            </span>
-                        </div>
+                        <div className="grow content-end">
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                <span className="bg-violet-100 text-violet-800 font-medium px-2.5 py-0.5 rounded dark:bg-violet-900 dark:text-violet-300">
+                                    {ai.type}
+                                </span>
+                                {ai.opensource != false ?
+                                    <span className="bg-green-100 text-green-800 font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                        Open Source
+                                    </span> : ''
+                                }
+                            </div>
 
-                        <a href="#"
-                            className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-violet-900 rounded hover:bg-violet-800">
-                            View Model
-                            <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M12.293 3.293a1 1 0 011.414 0L19 8.586a1 1 0 010 1.414l-5.293 5.293a1 1 0 01-1.414-1.414L15.586 10H4a1 1 0 110-2h11.586l-3.293-3.293a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
+                            <Link to={ai.link} className="inline-flex items-center text-sm font-medium text-white">
+                                View Model
+                                <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M12.293 3.293a1 1 0 011.414 0L19 8.586a1 1 0 010 1.414l-5.293 5.293a1 1 0 01-1.414-1.414L15.586 10H4a1 1 0 110-2h11.586l-3.293-3.293a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </Link>
+                        </div>
+                        
                     </div>
 
                 ))}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "PixelVibe",
+    "description": "An AI tool focused on generating pixel art game assets including characters, items, tiles, and UI elements. Ideal for indie game devs.",
+    "icon": "https://pixelvibe.com/favicon.ico",
+    "type": "pixel generator",
+    "opensource": false,
+    "link": "https://pixelvibe.com"
+  },
+  {
+    "id": 2,
+    "name": "Scenario.gg",
+    "description": "A model trainer where you can create consistent, style-aligned assets by training your own AI model with image prompts.",
+    "icon": "https://scenario.gg/favicon.ico",
+    "type": "model trainer",
+    "opensource": false,
+    "link": "https://scenario.gg"
+  },
+  {
+    "id": 3,
+    "name": "Leonardo.Ai",
+    "description": "A powerful AI art generator with models for pixel art, fantasy items, characters, backgrounds, and more.",
+    "icon": "https://app.leonardo.ai/favicon.ico",
+    "type": "text-to-image",
+    "opensource": false,
+    "link": "https://leonardo.ai"
+  },
+  {
+    "id": 4,
+    "name": "Artbreeder",
+    "description": "A collaborative AI platform to generate faces, characters, and concept art using gene-style mixing.",
+    "icon": "https://www.artbreeder.com/favicon.ico",
+    "type": "collaborative mixer",
+    "opensource": false,
+    "link": "https://www.artbreeder.com"
+  },
+  {
+    "id": 5,
+    "name": "Stable Diffusion - Pixel Art Model",
+    "description": "An open-source diffusion model trained specifically for pixel art. Can be run locally or on platforms like HuggingFace.",
+    "icon": "https://huggingface.co/front/favicon.ico",
+    "type": "text-to-image",
+    "opensource": true,
+    "link": "https://huggingface.co/stabilityai/stable-diffusion"
+  },
+  {
+    "id": 6,
+    "name": "Pixela.ai",
+    "description": "A dedicated AI platform for generating and downloading pixel art sprites and tilesets.",
+    "icon": "https://pixela.ai/favicon.ico",
+    "type": "pixel generator",
+    "opensource": false,
+    "link": "https://pixela.ai"
+  },
+  {
+    "id": 7,
+    "name": "Piffle",
+    "description": "Generate downloadable sprites, props, and backgrounds with pixel-perfect style using prompt-based input.",
+    "icon": "https://piffle.art/favicon.ico",
+    "type": "text-to-image",
+    "opensource": false,
+    "link": "https://piffle.art"
+  },
+  {
+    "id": 8,
+    "name": "Deep Dream Generator",
+    "description": "Stylized image generator great for creating surreal or themed backgrounds for games and art.",
+    "icon": "https://deepdreamgenerator.com/favicon.ico",
+    "type": "image-stylizer",
+    "opensource": false,
+    "link": "https://deepdreamgenerator.com"
+  }
+]

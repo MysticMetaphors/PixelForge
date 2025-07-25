@@ -35,7 +35,7 @@ export default function About() {
                     </p> */}
 
                     <p className="mb-4 text-justify text-[20px]">
-                        <span className="font-semibold underline text-blue-100">
+                        <span className="font-semibold underline text-blue-100 mr-[8px]">
                             It’s important to note that PixelForge does not own or claim ownership of the resources listed here.
                         </span>
                         <span className="text-white">Every asset featured on this site remains the property of its rightful creator or owner. We simply aim to showcase and link to these free resources, making it easier for developers, artists, and hobbyists to discover and use them — always in line with their respective licenses and terms of use.</span>
