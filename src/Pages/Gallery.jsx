@@ -8,11 +8,11 @@ export default function Gallery() {
 
     useEffect(() => {
         Promise.all([
-            fetch('src/data/assets.json').then((response) => {
+            fetch('/data/assets.json').then((response) => {
                 if (!response.ok) throw new Error('Failed to fetch assets');
                 return response.json();
             }),
-            fetch('src/data/creators.json').then((response) => {
+            fetch('/data/creators.json').then((response) => {
                 if (!response.ok) throw new Error('Failed to fetch creators');
                 return response.json();
             }),

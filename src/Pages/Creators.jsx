@@ -9,7 +9,7 @@ export default function Creators() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('/src/data/creators.json')
+        fetch('/data/creators.json')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Error occured');

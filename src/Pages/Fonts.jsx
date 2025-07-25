@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import asset from '../data/assets.json'
 
 export default function Fonts() {
 

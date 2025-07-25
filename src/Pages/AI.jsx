@@ -8,7 +8,7 @@ export default function AI() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('/src/data/ai.json')
+        fetch('/data/ai.json')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('An Error Occured!')
@@ -17,7 +17,7 @@ export default function AI() {
             })
             .then((data) => {
                 setModel(data)
-                // setLoading(false)
+                setLoading(false)
             })
             .catch((error) => {
                 console.error('An Error Occured: ', error)

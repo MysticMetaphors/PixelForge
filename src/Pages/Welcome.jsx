@@ -21,15 +21,15 @@ export default function Welcome() {
 
     useEffect(() => {
         Promise.all([
-            fetch('src/data/assets.json').then(res => {
+            fetch('/data/assets.json').then(res => {
                 if (!res.ok) throw new Error("Failed to fetch assets");
                 return res.json();
             }),
-            fetch('src/data/creators.json').then(res => {
+            fetch('/data/creators.json').then(res => {
                 if (!res.ok) throw new Error("Failed to fetch creators");
                 return res.json();
             }),
-            fetch('src/data/ai.json').then(res => {
+            fetch('/data/ai.json').then(res => {
                 if (!res.ok) throw new Error("Failed to fetch AI models");
                 return res.json();
             })

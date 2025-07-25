@@ -7,7 +7,7 @@ export default function CreatorsWorks() {
     const [assets, setAssets] = useState([])
 
     useEffect(() => {
-        fetch('/src/data/creators.json')
+        fetch('/data/creators.json')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Error occured')
@@ -25,7 +25,7 @@ export default function CreatorsWorks() {
     }, [])
 
     function get_assets(id) {
-        fetch('/src/data/assets.json')
+        fetch('/data/assets.json')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Error occured')
