@@ -52,8 +52,14 @@ export default function Fonts() {
                         </a>
                         <div className="p-5">
                             <a href="#">
-                                <h5 className="mb-2 text-[20px] font-bold tracking-tight text-black-500 dark:text-white"></h5>
+                                <h5 className="mb-2 text-[20px] font-bold tracking-tight text-black-500 dark:text-white">Pixelify</h5>
                             </a>
+
+                            <div className="flex-row">
+                                <span className="bg-green-100 w-fit text-green-800 font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 mr-[8px]">
+                                    Retro
+                                </span>
+                            </div>
 
                             <div className="flex flex-col">
                                 <div className="text-sm text-gray-600 dark:text-gray-400 mt-[10px]">

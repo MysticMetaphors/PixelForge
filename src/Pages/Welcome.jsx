@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import SkeletonLoad from "../Components/SkeletonLoad";
+import CardLoader from "../Components/SkeletonLoaders/CardLoader";
+import ContentLoader from "../Components/SkeletonLoaders/ContentLoader";
 
 export default function Welcome() {
 
@@ -102,7 +103,7 @@ export default function Welcome() {
             <div className='bg-violet-1000 flex flex-row flex-wrap gap-[20px] justify-center pt-[100px]'>
                 {loading ? (
                         Array.from({ length: 5 }, (_, i) => (
-                            <SkeletonLoad></SkeletonLoad>
+                            <ContentLoader></ContentLoader>
                         ))
                     ) : (ai_models.map((ai) => (
                     <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">
@@ -121,7 +122,7 @@ export default function Welcome() {
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
                     {loading ? (
                         Array.from({ length: 9 }, (_, i) => (
-                            <SkeletonLoad></SkeletonLoad>
+                            <CardLoader></CardLoader>
                         ))
                     ) : (assets.map((asset) => (
                         <div className="max-w-xs bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-violet-950 dark:border-gray-700">

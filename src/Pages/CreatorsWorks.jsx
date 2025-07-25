@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 export default function CreatorsWorks() {
     const { id } = useParams()
-const [creator, setCreator] = useState({});
+    const [creator, setCreator] = useState({});
     const [assets, setAssets] = useState([])
 
     useEffect(() => {
@@ -56,7 +56,7 @@ const [creator, setCreator] = useState({});
                         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{creator.name}'s Works</h1>
                         <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-200">{creator.description}</p>
 
-                        {/* <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+                       <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                             <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
                                 <div className="relative">
                                     <div className="absolute inset-y-0 start-0 flex items-center ps-[10px] pointer-events-none">
@@ -66,8 +66,16 @@ const [creator, setCreator] = useState({});
                                     </div>
                                     <input type="text" id="email-address-icon" className="bg-black-700 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
                                 </div>
+
+                                <select name="" id="" className="bg-black-700 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5  dark:border-gray-600 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option hidden selected value="">Category</option>
+                                    <option value="">All</option>
+                                    <option value="">Sprite</option>
+                                    <option value="">Tilesets</option>
+                                    <option value="">Backgrounds</option>
+                                </select>
                             </form>
-                        </div> */}
+                        </div>
 
                     </div>
                 </div>

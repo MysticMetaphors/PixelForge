@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ContentLoader from "../Components/SkeletonLoaders/ContentLoader";
 
 export default function AI() {
 
     const [ai_models, setModel] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         fetch('/src/data/ai.json')
@@ -15,6 +17,7 @@ export default function AI() {
             })
             .then((data) => {
                 setModel(data)
+                // setLoading(false)
             })
             .catch((error) => {
                 console.error('An Error Occured: ', error)
@@ -63,7 +66,11 @@ export default function AI() {
             </div>
 
             <div className="h-full bg-violet-1000 pb-[100px] flex flex-wrap justify-center gap-[20px]">
-                {ai_models.map((ai) => (
+                {loading ? (
+                    Array.from({ length: 9 }, (_, i) => (
+                        <ContentLoader></ContentLoader>
+                    ))
+                ) : (ai_models.map((ai) => (
                     <div className="flex flex-col max-w-sm bg-violet-950 border border-gray-200 dark:border-gray-700 rounded-lg shadow p-4">
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                             {ai.name}
@@ -94,10 +101,10 @@ export default function AI() {
                                 </svg>
                             </Link>
                         </div>
-                        
+
                     </div>
 
-                ))}
+                )))}
             </div>
         </>
     );

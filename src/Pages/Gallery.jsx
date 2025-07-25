@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import SkeletonLoad from '../Components/SkeletonLoad';
+import CardLoader from '../Components/SkeletonLoaders/CardLoader';
 
 export default function Gallery() {
     const [data, setData] = useState([]);
@@ -65,8 +65,6 @@ export default function Gallery() {
                                     <option value="">Backgrounds</option>
                                 </select>
                             </form>
-
-
                         </div>
 
                     </div>
@@ -78,7 +76,7 @@ export default function Gallery() {
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
                     {loading ? (
                         Array.from({ length: 8 }, (_, i) => (
-                            <SkeletonLoad></SkeletonLoad>
+                            <CardLoader></CardLoader>
                         ))
                     ) : (data.map((asset) => (
                         <div className="max-w-xs border border-gray-200 rounded-lg shadow-sm bg-violet-950 dark:border-gray-700">
