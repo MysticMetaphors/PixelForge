@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import CardLoader from '../Components/SkeletonLoaders/CardLoader';
+import { use } from 'react';
+import { supabase } from '../supabaseClient';
 
 export default function Gallery() {
     const [data, setData] = useState([]);
@@ -7,25 +9,38 @@ export default function Gallery() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        Promise.all([
-            fetch('/data/assets.json').then((response) => {
-                if (!response.ok) throw new Error('Failed to fetch assets');
-                return response.json();
-            }),
-            fetch('/data/creators.json').then((response) => {
-                if (!response.ok) throw new Error('Failed to fetch creators');
-                return response.json();
-            }),
-        ])
-            .then(([assets, creators]) => {
-                setData(assets);
-                setCreators(creators);
+        const fetchData = async () => {
+            try {
+                const [assetRes, creatorRes] = await Promise.all([
+                    supabase.from('works').select('*'),
+                    supabase.from('creators').select('*'),
+                ])
+
+                if (assetRes.error) throw new Error('An Error Occured: ', assetRes.error)
+                if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error)
+
+                setData(assetRes.data)
+                setCreators(creatorRes.data)
                 setLoading(false)
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }, []);
+            } catch (error) {
+                console.log('An Error Occured: ', error)
+            }
+        }
+
+        fetchData()
+    }, [])
+
+    function get_image(img) {
+        const imageUrl = supabase
+            .storage
+            .from('images')
+            .getPublicUrl(img)
+            .data
+            .publicUrl;
+
+        return imageUrl
+    }
+
 
     function get_creator(id) {
         const findItem = creator.find((item) => item.id == id)
@@ -81,7 +96,7 @@ export default function Gallery() {
                     ) : (data.map((asset) => (
                         <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700">
                             <a href="#">
-                                <img className="rounded-t-lg" src={asset.url} alt="Image" />
+                                <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />
                             </a>
                             <div className="p-5">
                                 <a href="#">
@@ -94,28 +109,21 @@ export default function Gallery() {
                                             {asset.tags}
                                         </span>
                                         {asset.generated != false && (
-                                            <span className="bg-blue-900 w-fit text-blue-300  font-medium px-2.5 py-0.5 rounded">
-                                                AI
+                                             <span className="content-center bg-blue-900 w-fit text-blue-300 font-medium px-2.5 py-0.5 rounded">
+                                                <span className="material-symbols-rounded" style={{fontSize: '16px'}}>
+                                                    auto_awesome
+                                                </span> AI
                                             </span>
                                         )}
                                     </div>
 
-
                                     <div className="text-sm text-gray-400 mt-[10px]">
                                         {get_creator(asset.creator)}
-                                        <p>License: Open Font License</p>
+                                        <p>License: {asset.license}</p>
                                     </div>
                                 </div>
 
-                                {/* <a href="#" className="inline-flex items-center  text-sm font-medium text-center text-black-500">
-                                    Read more
-                                    <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" alt="test" viewBox="0 0 14 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                    </svg>
-                                </a> */}
                             </div>
-
-
                         </div>
                     ))
                     )}

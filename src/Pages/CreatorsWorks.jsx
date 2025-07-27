@@ -1,44 +1,43 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import CardLoader from "../Components/SkeletonLoaders/CardLoader";
 
 export default function CreatorsWorks() {
     const { id } = useParams()
     const [creator, setCreator] = useState({});
     const [assets, setAssets] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('/data/creators.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Error occured')
-                }
-                return response.json()
-            })
-            .then((data) => {
-                const foundItem = data.find((item) => item.id == id)
-                get_assets(foundItem.id)
-                setCreator(foundItem)
-            })
-            .catch((error) => {
-                console.error('Error occured: ', error)
-            })
+        const fetchData = async () => {
+            try {
+                const [creatorRes, assetRes] = await Promise.all([
+                    supabase.from('creators').select('*').eq('id', id).single(),
+                    supabase.from('works').select('*').eq('creator', id)
+                ])
+                if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error);
+                if (assetRes.error) throw new Error('An Error Occured: ', assetRes.error);
+                setCreator(creatorRes.data)
+                setAssets(assetRes.data)
+                setLoading(false)
+            } catch (error) {
+                console.log('An Error Occured: ', error)
+            }
+        }
+
+        fetchData()
     }, [])
 
-    function get_assets(id) {
-        fetch('/data/assets.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Error occured')
-                }
-                return response.json()
-            })
-            .then((data) => {
-                const foundItem = data.filter((item) => item.creator == id)
-                setAssets(foundItem)
-            })
-            .catch((error) => {
-                console.error('Error occured: ', error)
-            })
+    function get_image(img) {
+        const imageUrl = supabase
+            .storage
+            .from('images')
+            .getPublicUrl(img)
+            .data
+            .publicUrl;
+
+        return imageUrl
     }
 
     console.log('creator', creator)
@@ -56,7 +55,7 @@ export default function CreatorsWorks() {
                         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl text-white">{creator.name}'s Works</h1>
                         <p className="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200">{creator.description}</p>
 
-                       <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+                        <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                             <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
                                 <div className="relative">
                                     <div className="absolute inset-y-0 start-0 flex items-center ps-[10px] pointer-events-none">
@@ -83,10 +82,14 @@ export default function CreatorsWorks() {
 
             <div className="bg-gray-50 relative bg-violet-1000 text-white/50 h-full flex flex-col justify-start items-center pb-[100px]">
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
-                    {assets.map((asset) => (
+                    {loading ? (
+                        Array.from({ length: 8 }, (_, i) => (
+                            <CardLoader></CardLoader>
+                        ))
+                    ) : (assets.map((asset) => (
                         <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700">
                             <a href="#">
-                                <img className="rounded-t-lg" src={asset.url} alt="Image" />
+                                <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />
                             </a>
                             <div className="p-5">
                                 <a href="#">
@@ -94,26 +97,29 @@ export default function CreatorsWorks() {
                                 </a>
 
                                 <div className="flex flex-col">
-                                    <span className="w-fit  text-xs font-medium px-2.5 py-0.5 rounded bg-green-900 text-green-300">
-                                        {asset.tags}
-                                    </span>
+                                    <div className="flex-row">
+                                        <span className="w-fit font-medium px-2.5 py-0.5 rounded bg-green-900 text-green-300 mr-[8px]">
+                                            {asset.tags}
+                                        </span>
+                                        {asset.generated != false && (
+                                            <span className="content-center bg-blue-900 w-fit text-blue-300 font-medium px-2.5 py-0.5 rounded">
+                                                <span className="material-symbols-rounded" style={{ fontSize: '16px' }}>
+                                                    auto_awesome
+                                                </span> AI
+                                            </span>
+                                        )}
+                                    </div>
+
 
                                     <div className="text-sm text-gray-400 mt-[10px]">
-                                        <p>License: Open Font License</p>
+                                        <p>License: {asset.license}</p>
                                     </div>
                                 </div>
-
-                                {/* <a href="#" className="inline-flex items-center  text-sm font-medium text-center text-black-500">
-                                    Read more
-                                    <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" alt="test" viewBox="0 0 14 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                    </svg>
-                                </a> */}
                             </div>
                         </div>
-                    ))}
+                    )))}
                 </div>
-                <button className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white'>See More</button>
+                {assets.length > 8 ? <button className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white'>See More</button> : ''}
             </div>
 
         </>

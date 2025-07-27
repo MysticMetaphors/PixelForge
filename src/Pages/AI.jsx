@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ContentLoader from "../Components/SkeletonLoaders/ContentLoader";
+import { supabase } from "../supabaseClient";
 
 export default function AI() {
 
@@ -8,20 +9,14 @@ export default function AI() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('/data/ai.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('An Error Occured!')
-                }
-                return response.json()
-            })
-            .then((data) => {
-                setModel(data)
-                setLoading(false)
-            })
-            .catch((error) => {
-                console.error('An Error Occured: ', error)
-            })
+        const fetchData = async () => {
+            const aiRes = await supabase.from('ai_models').select('*')
+            if (aiRes.error) throw new Error('An Error Occured: ', aiRes.error)
+            setModel(aiRes.data)
+            setLoading(false)
+        }
+
+        fetchData()
     }, [])
 
     return (
@@ -46,22 +41,8 @@ export default function AI() {
                                 </div>
                                 <input type="text" id="email-address-icon" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." />
                             </div>
-
-                            {/* <select name="" id="" className="bg-black-700 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5  dark:border-gray-600 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option hidden selected value="">Category</option>
-                                <option value="">All</option>
-                                <option value="retro">Retro / Pixel Art</option>
-                                <option value="sci-fi">Sci-Fi / Futuristic</option>
-                                <option value="fantasy">Fantasy / Medieval</option>
-                                <option value="horror">Horror / Thriller</option>
-                                <option value="racing">Racing / Sports</option>
-                                <option value="casual">Casual / Puzzle / Kids</option>
-                            </select> */}
                         </form>
-
-
                     </div>
-
                 </div>
             </div>
 

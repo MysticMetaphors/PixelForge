@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import ProfileLoader from "../Components/SkeletonLoaders/ProfileLoader";
+import { supabase } from "../supabaseClient";
 
 export default function Creators() {
 
@@ -9,21 +10,30 @@ export default function Creators() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('/data/creators.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Error occured');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setCreator(data);
+        const fetchData = async () => {
+            try {
+                const creatorRes = await supabase.from('creators').select('*')
+                if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error);    
+                setCreator(creatorRes.data)
                 setLoading(false)
-            })
-            .catch((error) => {
-                console.error('Error occured: ', error);
-            });
-    }, []);
+            } catch (error) {
+                console.log('An Error Occured: ',error)
+            }
+        }
+
+        fetchData()
+    }, [])
+
+     function get_image(img) {
+        const imageUrl = supabase
+            .storage
+            .from('images')
+            .getPublicUrl(img)
+            .data
+            .publicUrl;
+
+        return imageUrl
+    }
 
     return (
         <>
@@ -63,13 +73,10 @@ export default function Creators() {
                         ))
                     ) : (creators.map((creator) => (
                         <Link to={`/works/${creator.id}`} className="flex flex-col items-center border rounded-lg shadow-sm md:flex-row md:max-w-xl hover:bg-gray-100 border-gray-700 bg-violet-950 hover:bg-violet-900">
-                            <img className="object-cover w-full rounded-t-lg h-full md:h-full md:w-48 md:rounded-none md:rounded-s-lg" src="/Pixel Art background Violet theme nature (1).jpg" alt="" />
+                            <img className="object-cover w-full rounded-t-lg h-full md:h-full md:w-48 md:rounded-none md:rounded-s-lg" src={get_image(creator.image)} alt="" />
                             <div className="flex flex-col justify-between p-4 leading-normal">
                                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{creator.name}</h5>
                                 <p className="mb-3 font-normal text-gray-400">{creator.description}</p>
-                                {/* <span className="bg-green-100 w-fit text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                    Background
-                                </span> */}
                             </div>
                         </Link>
                     )))}

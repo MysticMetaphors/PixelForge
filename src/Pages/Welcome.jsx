@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import CardLoader from "../Components/SkeletonLoaders/CardLoader";
 import ContentLoader from "../Components/SkeletonLoaders/ContentLoader";
+import { supabase } from "../supabaseClient";
 
 export default function Welcome() {
 
@@ -20,49 +21,62 @@ export default function Welcome() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        Promise.all([
-            fetch('/data/assets.json').then(res => {
-                if (!res.ok) throw new Error("Failed to fetch assets");
-                return res.json();
-            }),
-            fetch('/data/creators.json').then(res => {
-                if (!res.ok) throw new Error("Failed to fetch creators");
-                return res.json();
-            }),
-            fetch('/data/ai.json').then(res => {
-                if (!res.ok) throw new Error("Failed to fetch AI models");
-                return res.json();
-            })
-        ])
-            .then(([assetsData, creatorsData, modelsData]) => {
-                setAsset(assetsData.slice(0, 12));
-                setCreator(creatorsData);
-                setModels(modelsData.slice(0, 5));
-                setLoading(false)
-                console.log('All data fetched');
-            })
-            .catch((error) => {
-                console.error("Error loading data:", error);
-            });
+        const fetchData = async () => {
+            try {
+                const [creatorsRes, worksRes, aiModelsRes] = await Promise.all([
+                    supabase.from('creators').select('*'),
+                    supabase.from('works').select('*'),
+                    supabase.from('ai_models').select('*')
+                ]);
+
+                if (creatorsRes.error) throw creatorsRes.error;
+                if (worksRes.error) throw worksRes.error;
+                if (aiModelsRes.error) throw aiModelsRes.error;
+
+                setCreator(creatorsRes.data);
+                setAsset(worksRes.data.slice(0, 12));
+                setModels(aiModelsRes.data.slice(0, 5));
+                setLoading(false);
+
+                console.log("All data fetched from Supabase");
+            } catch (error) {
+                console.error("Error loading data from Supabase:", error.message);
+            }
+        };
+
+        fetchData();
     }, []);
 
+    function get_image(img) {
+        const imageUrl = supabase
+            .storage
+            .from('images')
+            .getPublicUrl(img)
+            .data
+            .publicUrl;
+
+        return imageUrl
+    }
 
     function get_creator(id) {
         const findItem = creator.find((item) => item.id == id)
         return <p>By: {findItem.name}</p>
     }
 
+    // console.log("creator: ",creator)
+    // console.log("assets: ",assets)
+    // console.log("ai_models: ",ai_models)
+
     return (
         <>
-            {/* <Head title='PixelForge' /> */}
             <div
                 className="h-96 bg-cover bg-center"
                 style={{
                     backgroundImage: `linear-gradient(to top, #240e46ff, transparent), url('/Pixel Art background Violet theme nature.jpg')`,
                 }}
             >
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[200px] left-[100px]" />
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[300px] right-[100px]" />
+                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[200px] left-[100px]" />
+                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[300px] right-[100px]" />
 
                 <div className="flex flex-col justify-center items-center h-full pt-[100px]">
                     <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
@@ -71,18 +85,6 @@ export default function Welcome() {
                             At PixelForge we showcase free pixel art assets and AI models shared by their rightful creators, helping developers, artists, and hobbyists craft immersive games and unlock their creative potential.
                         </p>
 
-                        {/* <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-                            <form className="max-w-[400px] mx-auto">
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 start-0 flex items-center ps-[10px] pointer-events-none">
-                                        <span className="material-symbols-rounded text-gray-500">
-                                            search
-                                        </span>
-                                    </div>
-                                    <input type="text" id="email-address-icon" className="bg-black-700 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
-                                </div>
-                            </form>
-                        </div> */}
                         <div className="flex justify-center mt-4" onClick={goToAbout}>
                             <a
                                 href='#'
@@ -102,10 +104,10 @@ export default function Welcome() {
 
             <div className='bg-violet-1000 flex flex-row flex-wrap gap-[20px] justify-center pt-[100px]'>
                 {loading ? (
-                        Array.from({ length: 5 }, (_, i) => (
-                            <ContentLoader></ContentLoader>
-                        ))
-                    ) : (ai_models.map((ai) => (
+                    Array.from({ length: 5 }, (_, i) => (
+                        <ContentLoader></ContentLoader>
+                    ))
+                ) : (ai_models.map((ai) => (
                     <div className="max-w-sm p-6 border rounded-lg shadow-sm bg-violet-950 border-gray-700">
                         <Link to={ai.link}>
                             <h5 className="mb-2 text-2xl font-semibold tracking-tight text-white">{ai.name}</h5>
@@ -115,10 +117,10 @@ export default function Welcome() {
                 )))}
             </div>
 
-            <div className="bg-gray-50 relative bg-violet-1000 text-white/50 h-full pl-auto pr-auto flex flex-col justify-start items-center p-[100px]">
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[200px] left-[100px]" />
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[50%] right-[100px]" />
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 animate-float absolute top-[80%] left-[100px]" />
+            <div className="bg-gray-50 relative bg-violet-1000 text-white/50 h-full pl-auto pr-auto flex flex-col justify-start items-center md:p-[100px] px-0 py-[50px]">
+                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[200px] left-[100px]" />
+                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[50%] right-[100px]" />
+                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[80%] left-[100px]" />
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
                     {loading ? (
                         Array.from({ length: 9 }, (_, i) => (
@@ -127,7 +129,7 @@ export default function Welcome() {
                     ) : (assets.map((asset) => (
                         <div className="max-w-xs border border-gray-200 rounded-lg shadow-sm bg-violet-950 border-gray-700">
                             <a href="#">
-                                <img className="rounded-t-lg" src={asset.url} alt="Image" />
+                                <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />
                             </a>
                             <div className="p-5">
                                 <a href="#">
@@ -140,24 +142,20 @@ export default function Welcome() {
                                             {asset.tags}
                                         </span>
                                         {asset.generated != false && (
-                                            <span className="bg-blue-900 w-fit text-blue-300 font-medium px-2.5 py-0.5 rounded">
-                                                AI
+                                            <span className="content-center bg-blue-900 w-fit text-blue-300 font-medium px-2.5 py-0.5 rounded">
+                                                <span className="material-symbols-rounded" style={{fontSize: '16px'}}>
+                                                    auto_awesome
+                                                </span> AI
                                             </span>
                                         )}
                                     </div>
 
                                     <div className="text-sm text-gray-400 mt-[10px]">
                                         {get_creator(asset.creator)}
-                                        <p>License: Open Font License</p>
+                                        <p>License: {asset.license}</p>
                                     </div>
                                 </div>
 
-                                {/* <a href="#" className="inline-flex items-center  text-sm font-medium text-center text-black-500">
-                                    Read more
-                                    <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" alt="test" viewBox="0 0 14 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                    </svg>
-                                </a> */}
                             </div>
                         </div>
                     )))}
