@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import CardLoader from '../Components/SkeletonLoaders/CardLoader';
-import { use } from 'react';
 import { supabase } from '../supabaseClient';
+import { Link } from 'react-router-dom';
 
 export default function Gallery() {
     const [data, setData] = useState([]);
@@ -44,7 +44,7 @@ export default function Gallery() {
 
     function get_creator(id) {
         const findItem = creator.find((item) => item.id == id)
-        return <p>By: {findItem.name ?? 'Error Occured'}</p>
+        return <p>By: <Link to={`/works/${id}`} className='hover:underline'>{findItem.name ?? 'Error Occured'}</Link></p>
     }
 
     return (

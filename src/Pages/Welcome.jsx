@@ -38,9 +38,9 @@ export default function Welcome() {
                 setModels(aiModelsRes.data.slice(0, 5));
                 setLoading(false);
 
-                console.log("All data fetched from Supabase");
+                console.log("All data fetched");
             } catch (error) {
-                console.error("Error loading data from Supabase:", error.message);
+                console.error("Error loading data:", error.message);
             }
         };
 
@@ -60,7 +60,7 @@ export default function Welcome() {
 
     function get_creator(id) {
         const findItem = creator.find((item) => item.id == id)
-        return <p>By: {findItem.name}</p>
+          return <p>By: <Link to={`/works/${id}`} className="hover:underline">{findItem.name ?? 'Error Occured'}</Link></p>
     }
 
     // console.log("creator: ",creator)

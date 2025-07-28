@@ -40,8 +40,42 @@ export default function CreatorsWorks() {
         return imageUrl
     }
 
-    console.log('creator', creator)
-    console.log('assets', assets)
+    function download_file(img) {
+        console.log("downloadig: ", img)
+        const fetchFile = async () => {
+            try {
+                const { data, error } = await supabase
+                    .storage
+                    .from('images')
+                    .download(img)
+            
+                if (error) {
+                    console.error("Supabase Data:", data);
+                    console.error("Supabase Error:", error);
+                    return;
+                }
+
+                const url = URL.createObjectURL(data);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = img.split('/').pop(); 
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url); 
+
+            } catch (error) {
+                console.log('An Error Occured: ', error)
+            }
+
+        }
+        fetchFile()
+
+        return;
+    }
+
+    // console.log('creator', creator)
+    // console.log('assets', assets)
     return (
         <>
             <div
@@ -87,7 +121,7 @@ export default function CreatorsWorks() {
                             <CardLoader></CardLoader>
                         ))
                     ) : (assets.map((asset) => (
-                        <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700">
+                        <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700 relative">
                             <a href="#">
                                 <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />
                             </a>
@@ -114,13 +148,19 @@ export default function CreatorsWorks() {
                                     <div className="text-sm text-gray-400 mt-[10px]">
                                         <p>License: {asset.license}</p>
                                     </div>
+
+                                    {creator.name == 'Admin' ? (
+                                        <span className="material-symbols-rounded cursor-pointer absolute bottom-[20px] right-[20px] text-green-800" onClick={() => download_file(asset.image)}>
+                                            download
+                                        </span>
+                                    ) : ''}
                                 </div>
                             </div>
                         </div>
                     )))}
                 </div>
                 {assets.length > 8 ? <button className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white'>See More</button> : ''}
-            </div>
+            </div >
 
         </>
     );
