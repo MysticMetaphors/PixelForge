@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ContentLoader from "../Components/SkeletonLoaders/ContentLoader";
 import { supabase } from "../supabaseClient";
+import SearchInput from "../Components/SearchInput";
 
 export default function AI() {
 
     const [ai_models, setModel] = useState([])
+    const [filteredModels, setFiltered] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -33,14 +35,7 @@ export default function AI() {
 
                     <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                         <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
-                            <div className="relative">
-                                <div className="absolute inset-y-0 start-0 flex items-center ps-[10px] pointer-events-none">
-                                    <span className="material-symbols-rounded text-gray-500">
-                                        search
-                                    </span>
-                                </div>
-                                <input type="text" id="email-address-icon" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." />
-                            </div>
+                            <SearchInput data={ai_models} onResults={setFiltered} column={'name'} />
                         </form>
                     </div>
                 </div>
@@ -49,9 +44,12 @@ export default function AI() {
             <div className="h-full bg-violet-1000 pb-[100px] flex flex-wrap justify-center gap-[20px]">
                 {loading ? (
                     Array.from({ length: 9 }, (_, i) => (
-                        <ContentLoader></ContentLoader>
+                        <ContentLoader key={i} />
                     ))
-                ) : (ai_models.map((ai) => (
+                ) : filteredModels.length === 0 ? (
+                    <p>No Items Found :(</p>
+
+                ) : (filteredModels.map((ai) => (
                     <div className="flex flex-col max-w-sm bg-violet-950 border border-gray-700 rounded-lg shadow p-4">
                         <h3 className="text-2xl font-bold text-white mb-2">
                             {ai.name}
@@ -85,7 +83,8 @@ export default function AI() {
 
                     </div>
 
-                )))}
+                )))
+                }
             </div>
         </>
     );

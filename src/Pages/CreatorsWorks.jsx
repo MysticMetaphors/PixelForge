@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import CardLoader from "../Components/SkeletonLoaders/CardLoader";
+import SelectInput from "../Components/SelectInput";
+import SearchInput from "../Components/SearchInput";
 
 export default function CreatorsWorks() {
     const { id } = useParams()
+    const [filteredWorks, setFiltered] = useState([])
     const [creator, setCreator] = useState({});
     const [assets, setAssets] = useState([])
     const [loading, setLoading] = useState(true)
@@ -48,7 +51,7 @@ export default function CreatorsWorks() {
                     .storage
                     .from('images')
                     .download(img)
-            
+
                 if (error) {
                     console.error("Supabase Data:", data);
                     console.error("Supabase Error:", error);
@@ -58,11 +61,11 @@ export default function CreatorsWorks() {
                 const url = URL.createObjectURL(data);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = img.split('/').pop(); 
+                a.download = img.split('/').pop();
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
-                URL.revokeObjectURL(url); 
+                URL.revokeObjectURL(url);
 
             } catch (error) {
                 console.log('An Error Occured: ', error)
@@ -91,25 +94,16 @@ export default function CreatorsWorks() {
 
                         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                             <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 start-0 flex items-center ps-[10px] pointer-events-none">
-                                        <span className="material-symbols-rounded text-gray-500">
-                                            search
-                                        </span>
-                                    </div>
-                                    <input type="text" id="email-address-icon" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." />
-                                </div>
+                                <SearchInput data={assets} onResults={setFiltered} column={'title'} />
+                                <SelectInput option={['All', 'Sprite', 'Tilesets', 'Backgrounds']} placeholder='Category' />
 
-                                <select name="" id="" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5 border-gray-600 text-gray-400">
-                                    <option hidden selected value="">Category</option>
-                                    <option value="">All</option>
-                                    <option value="">Sprite</option>
-                                    <option value="">Tilesets</option>
-                                    <option value="">Backgrounds</option>
-                                </select>
+                                {creator.id != 1 ?
+                                    <Link to={creator.link} className="bg-green-600 border rounded-lg text-sm block w-[140px] ps-3 p-2.5 border-green-600 text-white hover:bg-green-800 hover:border-green-800">
+                                        Visit {creator.name}
+                                    </Link> : ''
+                                }
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -118,9 +112,12 @@ export default function CreatorsWorks() {
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
                     {loading ? (
                         Array.from({ length: 8 }, (_, i) => (
-                            <CardLoader></CardLoader>
+                            <CardLoader key={i} />
                         ))
-                    ) : (assets.map((asset) => (
+                    ) : filteredWorks.length === 0 ? (
+                        <p>No Items Found :(</p>
+
+                    ) : (filteredWorks.map((asset) => (
                         <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700 relative">
                             <a href="#">
                                 <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />

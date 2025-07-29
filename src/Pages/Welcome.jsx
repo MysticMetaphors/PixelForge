@@ -11,10 +11,6 @@ export default function Welcome() {
         window.location.href = "/gallery";
     }
 
-    function goToAbout() {
-        window.location.href = "/about";
-    }
-
     const [assets, setAsset] = useState([])
     const [creator, setCreator] = useState(null)
     const [ai_models, setModels] = useState([])
@@ -85,16 +81,16 @@ export default function Welcome() {
                             At PixelForge we showcase free pixel art assets and AI models shared by their rightful creators, helping developers, artists, and hobbyists craft immersive games and unlock their creative potential.
                         </p>
 
-                        <div className="flex justify-center mt-4" onClick={goToAbout}>
-                            <a
-                                href='#'
+                        <div className="flex justify-center mt-4">
+                            <Link
+                                to={'/gallery'}
                                 className="bg-violet-900 py-[8px] px-[15px] text-white flex gap-[5px] w-fit items-center"
                             >
                                 About Us
                                 <span className="material-symbols-rounded text-[18px]">
                                     arrow_forward
                                 </span>
-                            </a>
+                            </Link>
                         </div>
 
 

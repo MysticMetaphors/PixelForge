@@ -3,28 +3,30 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import ProfileLoader from "../Components/SkeletonLoaders/ProfileLoader";
 import { supabase } from "../supabaseClient";
+import SearchInput from "../Components/SearchInput";
 
 export default function Creators() {
 
     const [creators, setCreator] = useState([])
+    const [filteredCreators, setFiltered] = useState([]); //SearchInput
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const creatorRes = await supabase.from('creators').select('*')
-                if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error);    
+                if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error);
                 setCreator(creatorRes.data)
                 setLoading(false)
             } catch (error) {
-                console.log('An Error Occured: ',error)
+                console.log('An Error Occured: ', error)
             }
         }
 
         fetchData()
     }, [])
 
-     function get_image(img) {
+    function get_image(img) {
         const imageUrl = supabase
             .storage
             .from('images')
@@ -50,17 +52,9 @@ export default function Creators() {
 
                         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                             <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 start-0 flex items-center ps-[10px] pointer-events-none">
-                                        <span className="material-symbols-rounded text-gray-500">
-                                            search
-                                        </span>
-                                    </div>
-                                    <input type="text" id="email-address-icon" className="bg-black-700 border  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 border-gray-600 placeholder-gray-400 text-white" placeholder="Search..." />
-                                </div>
+                                <SearchInput data={creators} onResults={setFiltered} column={'name'} />
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -68,17 +62,39 @@ export default function Creators() {
             <div className="bg-gray-50 relative bg-violet-1000 text-white/50 h-full flex flex-row flex-wrap justify-start items-center pb-[100px]">
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
                     {loading ? (
-                        Array.from({ length: 8 }, (_, i) => (
-                            <ProfileLoader></ProfileLoader>
-                        ))
-                    ) : (creators.map((creator) => (
-                        <Link to={`/works/${creator.id}`} className="flex flex-col items-center border rounded-lg shadow-sm md:flex-row md:max-w-xl hover:bg-gray-100 border-gray-700 bg-violet-950 hover:bg-violet-900">
+                            Array.from({ length: 8 }, (_, i) => (
+                                <ProfileLoader key={i}/>
+                            ))
+                    ) : filteredCreators.length === 0 ? (
+                        <p>No Items Found :(</p>
+
+                    ) : (filteredCreators.map((creator) => (
+                        <div className="flex flex-col items-center border rounded-lg shadow-sm md:flex-row md:max-w-xl border-gray-700 bg-violet-950">
                             <img className="object-cover w-full rounded-t-lg h-full md:h-full md:w-48 md:rounded-none md:rounded-s-lg" src={get_image(creator.image)} alt="" />
                             <div className="flex flex-col justify-between p-4 leading-normal">
                                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{creator.name}</h5>
                                 <p className="mb-3 font-normal text-gray-400">{creator.description}</p>
+                                <div className="flex flex-row gap-[5px]">
+                                    {creator.id != 1 ?
+                                        <Link
+                                            to={creator.link}
+                                            className="bg-violet-900 py-[8px] px-[15px] text-white text-sm flex gap-[5px] w-fit items-center"
+                                        >
+                                            Visit {creator.name} 
+                                            <span className="material-symbols-rounded text-[18px]">
+                                                arrow_forward
+                                            </span>
+                                        </Link> : ''}
+
+                                    <Link
+                                        to={`/works/${creator.id}`}
+                                        className="bg-violet-900 py-[8px] px-[15px] text-white text-sm flex gap-[5px] w-fit items-center"
+                                    >
+                                        See Works
+                                    </Link>
+                                </div>
                             </div>
-                        </Link>
+                        </div>
                     )))}
                 </div>
             </div>
