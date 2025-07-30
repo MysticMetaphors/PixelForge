@@ -14,6 +14,7 @@ export default function App() {
     <MainLayout>
       <Routes>
         <Route path="/" element={<Welcome />} />
+        <Route path="/gallery/:category" element={<Gallery />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/creators" element={<Creators />} />
         <Route path="/about" element={<About />} />

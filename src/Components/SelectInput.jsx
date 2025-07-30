@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
 
-export default function SelectInput({ data = [], onResults, column, placeholder = 'Category', option = [] }) {
+export default function SelectInput({ data = [], onResults, column, placeholder = 'Category', option = [], selectDefault }) {
     const [query, setQuery] = useState("");
+    const [state, setState] = useState(selectDefault ? true : false)
+    const defaultValue = selectDefault || '';
 
     useEffect(() => {
         if (!column) return;
+
+        if (defaultValue && state == true) {
+            setQuery(defaultValue);
+            setState(false)
+        }
 
         if (query.trim() === "" || query.trim() === "All") {
             onResults(data);
@@ -18,7 +25,7 @@ export default function SelectInput({ data = [], onResults, column, placeholder 
             });
             onResults(filtered);
         }
-    }, [query, data, onResults, column]);
+    }, [query, data, onResults, column, defaultValue]);
 
     return (
         <select

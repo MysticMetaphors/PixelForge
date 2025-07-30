@@ -31,7 +31,7 @@ export default function Welcome() {
                 if (aiModelsRes.error) throw aiModelsRes.error;
 
                 setCreator(creatorsRes.data);
-                setAsset(worksRes.data.slice(0, 12));
+                setAsset(worksRes.data.slice(0, 9));
                 setModels(aiModelsRes.data.slice(0, 5));
                 setLoading(false);
 
@@ -157,7 +157,7 @@ export default function Welcome() {
                         </div>
                     )))}
                 </div>
-                {assets.length > 9 && (
+                {assets.length >= 9 && (
                     <button onClick={goToGallery} className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white cursor-pointer'>See More</button>
                 )}
             </div>

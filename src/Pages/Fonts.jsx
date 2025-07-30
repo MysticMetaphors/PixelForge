@@ -1,6 +1,54 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import SearchInput from '../Components/SearchInput';
+import AssetLicense from '../Components/AssetLicense';
+import CardLoader from '../Components/SkeletonLoaders/CardLoader';
+import { Link } from 'react-router-dom';
 
 export default function Fonts() {
+    const [font, setFont] = useState([]);
+    const [filteredFont, setFiltered] = useState([]); //SearchInput
+    const [creator, setCreators] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [fontRes, creatorRes] = await Promise.all([
+                    supabase.from('fonts').select('*'),
+                    supabase.from('creators').select('*'),
+                ])
+
+                if (fontRes.error) throw new Error('An Error Occured: ', fontRes.error)
+                if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error)
+
+                setFont(fontRes.data)
+                setCreators(creatorRes.data)
+                console.log("Fetch Data")
+                setLoading(false)
+            } catch (error) {
+                console.log('An Error Occured: ', error)
+            }
+        }
+
+        fetchData()
+    }, [])
+
+    function get_image(img) {
+        const imageUrl = supabase
+            .storage
+            .from('images')
+            .getPublicUrl(img)
+            .data
+            .publicUrl;
+
+        return imageUrl
+    }
+
+    function get_creator(id) {
+        const findItem = creator.find((item) => item.id == id)
+        return <p>By: <Link to={`/works/${id}`} className='hover:underline'>{findItem.name ?? 'Error Occured'}</Link></p>
+    }
 
     return (
         <>
@@ -12,20 +60,13 @@ export default function Fonts() {
             >
                 <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
                     <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl text-white">Fonts</h1>
-                    <p className="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200"> At PixelForge we connect you with free pixel art assets and AI models created by talented artists and shared for everyone, so you can find what you need to craft your games.</p>
+                    <p className="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200"> At PixelForge we connect you with free pixel art fonts and AI models created by talented artists and shared for everyone, so you can find what you need to craft your games.</p>
 
                     <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                         <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
-                            <div className="relative">
-                                <div className="absolute inset-y-0 start-0 flex items-center ps-[10px] pointer-events-none">
-                                    <span className="material-symbols-rounded text-gray-500">
-                                        search
-                                    </span>
-                                </div>
-                                  <input type="text" id="email-address-icon" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." />
-                                </div>
+                            <SearchInput data={font} onResults={setFiltered} column={'title'}/>
 
-                                <select name="" id="" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5 border-gray-600 text-gray-400">
+                            <select name="" id="" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5 border-gray-600 text-gray-400">
                                 <option hidden selected value="">Category</option>
                                 <option value="">All</option>
                                 <option value="retro">Retro / Pixel Art</option>
@@ -43,41 +84,40 @@ export default function Fonts() {
                 </div>
             </div>
 
-            <div className="h-full bg-violet-1000 pb-[100px] flex flex-wrap justify-center gap-[20px]">
-                {Array.from({ length: 12 }, (_, i) => (
-                    <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700">
-                        <a href="#">
-                            <img className="rounded-t-lg" src='/Pixel Art Backgroun scenery.jpg' alt="Image" />
-                        </a>
-                        <div className="p-5">
-                            <a href="#">
-                                <h5 className="mb-2 text-[20px] font-bold tracking-tight text-white">Pixelify</h5>
-                            </a>
+             <div className="bg-gray-50 relative bg-violet-1000 text-white/50 h-full flex flex-col justify-start items-center pb-[100px]">
+                <div className='w-full flex flex-row gap-5 justify-center flex-wrap' id='search_area'>
+                    {loading ? (
+                        Array.from({ length: 8 }, (_, i) => (
+                            <CardLoader key={i} />
+                        ))
+                    ) : filteredFont.length === 0 ? (
+                        <p>No Items Found :(</p>
 
-                            <div className="flex-row">
-                                <span className="w-fit font-medium px-2.5 py-0.5 rounded bg-green-900 text-green-300 mr-[8px]">
-                                    Retro
-                                </span>
-                            </div>
+                    ) : (filteredFont.map((font) => (
+                        <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700">
+                            <Link to={font.link}>
+                                <img className="rounded-t-lg" src={get_image(font.image)} alt="Image" />
+                            </Link>
+                            <div className="p-5">
+                                <Link to={font.link}>
+                                    <h5 className="mb-2 text-[20px] font-bold tracking-tight text-white">{font.title}</h5>
+                                </Link>
 
-                            <div className="flex flex-col">
-                                <div className="text-sm text-gray-400 mt-[10px]">
-                                    <p>By: Google Fonts</p>
-                                    <p>License: Open Font License</p>
+                                <div className="flex flex-col">
+                                    <div className="text-sm text-gray-400 mt-[10px]">
+                                        {get_creator(font.creator)}
+                                        <AssetLicense asset={font} />
+                                    </div>
                                 </div>
+
                             </div>
-
-                            {/* <a href="#" className="inline-flex items-center  text-sm font-medium text-center text-black-500">
-                                    Read more
-                                    <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" alt="test" viewBox="0 0 14 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                    </svg>
-                                </a> */}
                         </div>
-
-
-                    </div>
-                ))}
+                    ))
+                    )}
+                </div>
+                {font.length > 12 && (
+                    <button className='mt-[100px] bg-violet-900 py-[8px] px-[15px] text-white cursor-pointer'>See More</button>
+                )}
             </div>
         </>
     );

@@ -68,9 +68,9 @@ export default function Navigation() {
                             >
                                 <ul className="md:py-2 md:px-0 px-5 py-0 md:text-sm text-normal">
                                     <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Pack</Link></li>
-                                    <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Sprites</Link></li>
-                                    <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Tilesets</Link></li>
-                                    <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Backgrounds</Link></li>
+                                    <li><Link to="/gallery/Sprites" className="block py-2 lg:pl-[20px] px-3">Sprites</Link></li>
+                                    <li><Link to="/gallery/Tilesets" className="block py-2 lg:pl-[20px] px-3">Tilesets</Link></li>
+                                    <li><Link to="/gallery/Background" className="block py-2 lg:pl-[20px] px-3">Backgrounds</Link></li>
                                 </ul>
                             </div>
                         </li>
