@@ -84,7 +84,7 @@ export default function Welcome() {
 
                         <div className="flex justify-center mt-4">
                             <Link
-                                to={'/gallery'}
+                                to={'/About'}
                                 className="bg-violet-900 py-[8px] px-[15px] text-white flex gap-[5px] w-fit items-center"
                             >
                                 About Us
