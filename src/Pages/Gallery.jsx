@@ -4,6 +4,7 @@ import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
 import SearchInput from '../Components/SearchInput';
 import SelectInput from '../Components/SelectInput';
+import AssetLicense from '../Components/AssetLicense';
 
 export default function Gallery() {
     const [works, setWorks] = useState([]);
@@ -67,7 +68,7 @@ export default function Gallery() {
                         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                             <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
                                 <SearchInput data={works} onResults={setFiltered} column={'title'} />
-                                <SelectInput option={['All','Sprite','Tilesets','Backgrounds']} placeholder='Category'/>
+                                <SelectInput data={works} option={['All','Sprite','Tilesets','Background']} column={'tags'} onResults={setFiltered} placeholder='Category'/>
 
                                 {/* <select name="" id="" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5 border-gray-600 text-gray-400">
                                     <option hidden selected value="">Category</option>
@@ -94,13 +95,13 @@ export default function Gallery() {
 
                     ) : (filteredWorks.map((asset) => (
                         <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700">
-                            <a href="#">
+                            <Link to={asset.link}>
                                 <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />
-                            </a>
+                            </Link>
                             <div className="p-5">
-                                <a href="#">
+                                <Link to={asset.link}>
                                     <h5 className="mb-2 text-[20px] font-bold tracking-tight text-white">{asset.title}</h5>
-                                </a>
+                                </Link>
 
                                 <div className="flex flex-col">
                                     <div className="flex-row">
@@ -118,7 +119,7 @@ export default function Gallery() {
 
                                     <div className="text-sm text-gray-400 mt-[10px]">
                                         {get_creator(asset.creator)}
-                                        <p>License: {asset.license}</p>
+                                        <AssetLicense asset={asset} />
                                     </div>
                                 </div>
 

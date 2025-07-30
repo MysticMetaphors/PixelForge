@@ -12,7 +12,7 @@ export default function Footer() {
                                 <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">PixelForge</span>
                             </a>
                         </div>
-                        <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+                        <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2">
                             <div>
                                 <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase text-white">Quick Links</h2>
                                 <ul className="text-gray-400 font-medium">
@@ -36,7 +36,7 @@ export default function Footer() {
                                     </li>
                                 </ul>
                             </div>
-                            <div>
+                            {/* <div>
                                 <h2 className="mb-6 text-sm font-semibold uppercase text-white">Resources</h2>
                                 <ul className="text-gray-400 font-medium">
                                     <li className="mb-4">
@@ -46,7 +46,7 @@ export default function Footer() {
                                         <a href="https://tailwindcss.com/" className="hover:underline">Tailwind CSS</a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> */}
                             {/* <div>
                                 <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
                                 <ul className="text-gray-500 dark:text-gray-400 font-medium">
@@ -61,12 +61,12 @@ export default function Footer() {
                             <div>
                                 <h2 className="mb-6 text-sm font-semibold uppercase text-white">Legal</h2>
                                 <ul className="text-gray-400 font-medium">
-                                    <li className="mb-4">
+                                    {/* <li className="mb-4">
                                         <a href="#" className="hover:underline">Privacy Policy</a>
                                     </li>
                                     <li className="mb-4">
                                         <a href="#" className="hover:underline">Terms &amp; Conditions</a>
-                                    </li>
+                                    </li> */}
                                     <li className="mb-4">
                                         <a href="#" className="hover:underline">Contact</a>
                                     </li>

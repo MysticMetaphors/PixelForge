@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CardLoader from "../Components/SkeletonLoaders/CardLoader";
 import ContentLoader from "../Components/SkeletonLoaders/ContentLoader";
 import { supabase } from "../supabaseClient";
+import AssetLicense from "../Components/AssetLicense";
 
 export default function Welcome() {
 
@@ -124,13 +125,13 @@ export default function Welcome() {
                         ))
                     ) : (assets.map((asset) => (
                         <div className="max-w-xs border border-gray-200 rounded-lg shadow-sm bg-violet-950 border-gray-700">
-                            <a href="#">
+                             <Link to={asset.link}>
                                 <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />
-                            </a>
+                            </Link>
                             <div className="p-5">
-                                <a href="#">
+                                <Link to={asset.link}>
                                     <h5 className="mb-2 text-[20px] font-bold tracking-tight text-white">{asset.title}</h5>
-                                </a>
+                                </Link>
 
                                 <div className="flex flex-col">
                                     <div className="flex-row">
@@ -148,7 +149,7 @@ export default function Welcome() {
 
                                     <div className="text-sm text-gray-400 mt-[10px]">
                                         {get_creator(asset.creator)}
-                                        <p>License: {asset.license}</p>
+                                        <AssetLicense asset={asset} />
                                     </div>
                                 </div>
 

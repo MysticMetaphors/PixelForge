@@ -4,6 +4,7 @@ import { supabase } from "../supabaseClient";
 import CardLoader from "../Components/SkeletonLoaders/CardLoader";
 import SelectInput from "../Components/SelectInput";
 import SearchInput from "../Components/SearchInput";
+import AssetLicense from "../Components/AssetLicense";
 
 export default function CreatorsWorks() {
     const { id } = useParams()
@@ -95,11 +96,11 @@ export default function CreatorsWorks() {
                         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                             <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
                                 <SearchInput data={assets} onResults={setFiltered} column={'title'} />
-                                <SelectInput option={['All', 'Sprite', 'Tilesets', 'Backgrounds']} placeholder='Category' />
+                                <SelectInput data={assets} option={['All','Sprite','Tilesets','Background']} column={'tags'} onResults={setFiltered} placeholder='Category'/>
 
                                 {creator.id != 1 ?
                                     <Link to={creator.link} className="bg-green-600 border rounded-lg text-sm block w-[140px] ps-3 p-2.5 border-green-600 text-white hover:bg-green-800 hover:border-green-800">
-                                        Visit {creator.name}
+                                        Visit Page
                                     </Link> : ''
                                 }
                             </form>
@@ -119,13 +120,13 @@ export default function CreatorsWorks() {
 
                     ) : (filteredWorks.map((asset) => (
                         <div className="max-w-xs border rounded-lg shadow-sm bg-violet-950 border-gray-700 relative">
-                            <a href="#">
+                            <Link to={asset.link}>
                                 <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />
-                            </a>
+                            </Link>
                             <div className="p-5">
-                                <a href="#">
-                                    <h5 className="mb-2 text-[16px] font-bold tracking-tight text-white">{asset.title}</h5>
-                                </a>
+                                <Link to={asset.link}>
+                                    <h5 className="mb-2 text-[20px] font-bold tracking-tight text-white">{asset.title}</h5>
+                                </Link>
 
                                 <div className="flex flex-col">
                                     <div className="flex-row">
@@ -143,7 +144,7 @@ export default function CreatorsWorks() {
 
 
                                     <div className="text-sm text-gray-400 mt-[10px]">
-                                        <p>License: {asset.license}</p>
+                                        <AssetLicense asset={asset} />
                                     </div>
 
                                     {creator.name == 'Admin' ? (
