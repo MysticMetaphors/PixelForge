@@ -76,7 +76,7 @@ export default function AI() {
                                 }
                             </div>
 
-                            <Link to={ai.link} className="inline-flex items-center text-sm font-medium text-white">
+                            <Link to={ai.link} className="inline-flex items-center text-sm font-medium text-white hover:underline">
                                 View Model
                                 <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
@@ -92,7 +92,7 @@ export default function AI() {
                 }
             </div>
 
-            <Toast />
+            <Toast header={'PLEASE NOTE '} content={'While some AI  models are free to use, others may require payment or subscription depending on their providers. PixelForge simply features and links to these tools — we do not host, own, or sell them.'}/>
         </>
     );
 }

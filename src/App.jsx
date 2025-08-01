@@ -9,6 +9,7 @@ import Fonts from './Pages/Fonts';
 import AI from './Pages/AI';
 import CreatorsWorks from './Pages/CreatorsWorks';
 import Report from './Pages/Report';
+import Contact from './Pages/Contact';
 
 export default function App() {
   return (
@@ -22,7 +23,7 @@ export default function App() {
         <Route path="/fonts" element={<Fonts />} />
         <Route path="/ai" element={<AI />} />
         <Route path="/report" element={<Report />}/>
-        {/* <Route path="/contact" element={<Contact />}/> */}
+        <Route path="/contact" element={<Contact />}/>
         <Route path="/works/:id" element={<CreatorsWorks />} />
       </Routes>
     </MainLayout>

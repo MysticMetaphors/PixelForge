@@ -16,7 +16,7 @@ export default function AssetLicense({ asset }) {
                         className="ml-2 text-blue-400 hover:underline cursor-pointer relative"
                         onClick={() => showFull != false ? setShowFull(false) : setShowFull(true)}
                     >
-                        See License
+                        {showFull != false ? 'Close': 'See License'}
                         <span className="material-symbols-rounded absolute top-[-1.4px]">
                             chevron_forward
                         </span>
