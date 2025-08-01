@@ -71,7 +71,7 @@ export default function Footer() {
                                         <a href="#" className="hover:underline">Contact</a>
                                     </li>
                                     <li>
-                                        <a href="#" className="hover:underline">Report</a>
+                                        <Link to={'/report'} className="hover:underline">Report</Link>
                                     </li>
                                 </ul>
                             </div>

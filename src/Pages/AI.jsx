@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ContentLoader from "../Components/SkeletonLoaders/ContentLoader";
 import { supabase } from "../supabaseClient";
 import SearchInput from "../Components/SearchInput";
+import Toast from "../Components/Toast";
 
 export default function AI() {
 
@@ -31,11 +32,12 @@ export default function AI() {
             >
                 <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
                     <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl text-white">AI Models</h1>
-                    <p className="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200"> At PixelForge we connect you with free pixel art assets and AI models created by talented artists and shared for everyone, so you can find what you need to craft your games.</p>
+                    <p className="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200"> At PixelForge, we connect you with free pixel art assets and cutting-edge AI models created by talented artists and developers. These tools are shared to help you bring your game ideas to life.</p>
 
                     <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                         <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
                             <SearchInput data={ai_models} onResults={setFiltered} column={'name'} />
+                            <Link to={'https://www.thewarehouse.ai/'} className="bg-green-600 border rounded-lg text-sm block w-[140px] ps-3 p-2.5 border-green-600 text-white hover:bg-green-800 hover:border-green-800">AI Warehouse</Link>
                         </form>
                     </div>
                 </div>
@@ -51,9 +53,12 @@ export default function AI() {
 
                 ) : (filteredModels.map((ai) => (
                     <div className="flex flex-col max-w-sm bg-violet-950 border border-gray-700 rounded-lg shadow p-4">
-                        <h3 className="text-2xl font-bold text-white mb-2">
-                            {ai.name}
-                        </h3>
+                        <div className="flex flex-row gap-[10px] h-fit w-full items-center">
+                            <img src={ai.icon} alt="icon" className="h-[50px] w-auto" />
+                            <h3 className="text-2xl font-bold text-white">
+                                {ai.name}
+                            </h3>
+                        </div>
 
                         <p className="text-gray-300 mb-4 font-normal">
                             {ai.description}
@@ -86,6 +91,8 @@ export default function AI() {
                 )))
                 }
             </div>
+
+            <Toast />
         </>
     );
 }

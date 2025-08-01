@@ -39,11 +39,12 @@ export default function About() {
                 <div className="px-[16%] mt-[30px]">
                     <h1 className="text-4xl font-extrabold tracking-tight leading-none md:text-3xl lg:text-4xl text-white mb-4">Disclaimer: </h1>
                     
-                    <p className="text-justify text-white text-lg">The <span className="font-semibold underline text-blue-100 mr-[px]">"Featured Creators"</span> section showcases the work of independent artists and developers. 
-                    I'm not affiliated with these creators, and their inclusion does not imply any partnership or endorsement. 
+                    <p className="text-justify text-white text-lg mb-4">The <span className="font-semibold underline text-blue-100 mr-[px]">"Featured Creators"</span> and 
+                    <span className="font-semibold underline text-blue-100 mx-[4px]">"AI Models"</span>
+                    section showcases the work of independent artists and developers. 
+                    I'm not affiliated with these creators & Organization, and their inclusion does not imply any partnership or endorsement. 
                     I simply feature their work to highlight outstanding contributions within the community.</p>
                 </div>
-
             </div>
         </>
     );
