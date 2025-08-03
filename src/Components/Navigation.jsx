@@ -1,13 +1,6 @@
 import { Link } from "react-router-dom";
 
 export default function Navigation() {
-    function toggleDropdown(e) {
-        const el = e.target;
-        const parent = el.closest("li");
-        const droplinks = parent.querySelector("#dropdownNavbar");
-        droplinks.classList.toggle("hidden");
-    }
-
     function toggleNavigation() {
         const nav = document.getElementById('navbar-multi-level')
         nav.classList.toggle('hidden')
@@ -54,16 +47,15 @@ export default function Navigation() {
                         <li>
                             <Link to="/" className="block py-2 px-3 hover:bg-violet-900">Home</Link>
                         </li>
-                        <li className="relative">
-                            <button
-                                className="flex gap-1 items-center w-full py-2 px-3 hover:bg-violet-900"
-                            >
+                        <li className="relative group">
+                            <button className="flex gap-1 items-center w-full py-2 px-3 hover:bg-violet-900">
                                 <Link to="/gallery">Gallery</Link>
-                                <span className="material-symbols-rounded" onClick={toggleDropdown}>keyboard_arrow_down</span>
+                                <span className="material-symbols-rounded">keyboard_arrow_down</span>
                             </button>
+
                             <div
                                 id="dropdownNavbar"
-                                className="z-10 hidden md:absolute md:bg-violet-1000 left-0 mt-2 font-normal divide-y rounded-lg shadow-sm w-44 divide-gray-600"
+                                className="z-10 hidden group-hover:block md:absolute md:bg-violet-1000 left-0 font-normal divide-y rounded-lg shadow-sm w-44 divide-gray-600"
                             >
                                 <ul className="md:py-2 md:px-0 px-5 py-0 md:text-sm text-normal">
                                     <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Pack</Link></li>
@@ -73,6 +65,7 @@ export default function Navigation() {
                                 </ul>
                             </div>
                         </li>
+
                         <li>
                             <Link to="/creators" className="block py-2 px-3 hover:bg-violet-900">Creators</Link>
                         </li>
