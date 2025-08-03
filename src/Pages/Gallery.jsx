@@ -13,7 +13,6 @@ export default function Gallery() {
     const [loading, setLoading] = useState(true);
 
     const category = useParams();
-    console.log(category.category)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +27,6 @@ export default function Gallery() {
 
                 setWorks(assetRes.data)
                 setCreators(creatorRes.data)
-                console.log("Fetch Data")
                 setLoading(false)
             } catch (error) {
                 console.log('An Error Occured: ', error)

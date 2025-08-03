@@ -25,7 +25,7 @@ function ScrollToTopButton() {
     isVisible && (
       <button
         onClick={scrollToTop}
-        className="fixed bottom-8 right-8 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full shadow-lg transition duration-300"
+        className="fixed bottom-8 right-8 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full shadow-lg transition duration-300 cursor-pointer"
       >
         ↑ Top
       </button>

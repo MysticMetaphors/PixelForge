@@ -34,8 +34,6 @@ export default function Welcome() {
                 setAsset(worksRes.data.slice(0, 9));
                 setModels(aiModelsRes.data.slice(0, 5));
                 setLoading(false);
-
-                console.log("All data fetched");
             } catch (error) {
                 console.error("Error loading data:", error.message);
             }
@@ -57,7 +55,7 @@ export default function Welcome() {
 
     function get_creator(id) {
         const findItem = creator.find((item) => item.id == id)
-          return <p>By: <Link to={`/works/${id}`} className="hover:underline">{findItem.name ?? 'Error Occured'}</Link></p>
+        return <p>By: <Link to={`/works/${id}`} className="hover:underline">{findItem.name ?? 'Error Occured'}</Link></p>
     }
 
     // console.log("creator: ",creator)
@@ -72,8 +70,8 @@ export default function Welcome() {
                     backgroundImage: `linear-gradient(to top, #240e46ff, transparent), url('/Pixel Art background Violet theme nature.jpg')`,
                 }}
             >
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[200px] left-[100px]" />
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[300px] right-[100px]" />
+                {/* <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[200px] left-[100px]" />
+                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[300px] right-[100px]" /> */}
 
                 <div className="flex flex-col justify-center items-center h-full pt-[100px]">
                     <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
@@ -93,8 +91,6 @@ export default function Welcome() {
                                 </span>
                             </Link>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -107,7 +103,12 @@ export default function Welcome() {
                 ) : (ai_models.map((ai) => (
                     <div className="max-w-sm p-6 border rounded-lg shadow-sm bg-violet-950 border-gray-700">
                         <Link to={ai.link}>
-                            <h5 className="mb-2 text-2xl font-semibold tracking-tight text-white">{ai.name}</h5>
+                            <div className="flex flex-row gap-[10px] h-fit w-full items-center">
+                                <img src={ai.icon} alt="icon" className="h-[50px] w-auto" />
+                                <h3 className="text-2xl font-bold text-white">
+                                    {ai.name}
+                                </h3>
+                            </div>
                         </Link>
                         <p className="mb-3 font-normal ext-gray-400">{ai.description}</p>
                     </div>
@@ -115,9 +116,9 @@ export default function Welcome() {
             </div>
 
             <div className="bg-gray-50 relative bg-violet-1000 text-white/50 h-full pl-auto pr-auto flex flex-col justify-start items-center md:p-[100px] px-0 py-[50px]">
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[200px] left-[100px]" />
+                {/* <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[200px] left-[100px]" />
                 <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[50%] right-[100px]" />
-                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[80%] left-[100px]" />
+                <img src="https://flowbite.com/docs/images/logo.svg" className="w-32 h-32 hidden md:block animate-float absolute top-[80%] left-[100px]" /> */}
                 <div className='w-full flex flex-row gap-5 justify-center flex-wrap'>
                     {loading ? (
                         Array.from({ length: 9 }, (_, i) => (
@@ -125,7 +126,7 @@ export default function Welcome() {
                         ))
                     ) : (assets.map((asset) => (
                         <div className="max-w-xs border border-gray-200 rounded-lg shadow-sm bg-violet-950 border-gray-700">
-                             <Link to={asset.link}>
+                            <Link to={asset.link}>
                                 <img className="rounded-t-lg" src={get_image(asset.image)} alt="Image" />
                             </Link>
                             <div className="p-5">
@@ -140,7 +141,7 @@ export default function Welcome() {
                                         </span>
                                         {asset.generated != false && (
                                             <span className="content-center bg-blue-900 w-fit text-blue-300 font-medium px-2.5 py-0.5 rounded">
-                                                <span className="material-symbols-rounded" style={{fontSize: '16px'}}>
+                                                <span className="material-symbols-rounded" style={{ fontSize: '16px' }}>
                                                     auto_awesome
                                                 </span> AI
                                             </span>

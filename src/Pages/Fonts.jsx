@@ -24,7 +24,6 @@ export default function Fonts() {
 
                 setFont(fontRes.data)
                 setCreators(creatorRes.data)
-                console.log("Fetch Data")
                 setLoading(false)
             } catch (error) {
                 console.log('An Error Occured: ', error)
@@ -66,7 +65,7 @@ export default function Fonts() {
                         <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
                             <SearchInput data={font} onResults={setFiltered} column={'title'}/>
 
-                            <select name="" id="" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5 border-gray-600 text-gray-400">
+                            {/* <select name="" id="" className="bg-black-700 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5 border-gray-600 text-gray-400">
                                 <option hidden selected value="">Category</option>
                                 <option value="">All</option>
                                 <option value="retro">Retro / Pixel Art</option>
@@ -75,7 +74,7 @@ export default function Fonts() {
                                 <option value="horror">Horror / Thriller</option>
                                 <option value="racing">Racing / Sports</option>
                                 <option value="casual">Casual / Puzzle / Kids</option>
-                            </select>
+                            </select> */}
                         </form>
 
 

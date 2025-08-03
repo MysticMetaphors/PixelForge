@@ -16,14 +16,20 @@ export default function CreatorsWorks() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [creatorRes, assetRes] = await Promise.all([
+                const [creatorRes, fontsAsset, assetRes] = await Promise.all([
                     supabase.from('creators').select('*').eq('id', id).single(),
+                    supabase.from('fonts').select('*').eq('creator', id),
                     supabase.from('works').select('*').eq('creator', id)
                 ])
                 if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error);
                 if (assetRes.error) throw new Error('An Error Occured: ', assetRes.error);
+                let asset = []
+                if (fontsAsset.data) {
+                    asset.push(...fontsAsset.data)
+                }
+                asset.push(...assetRes.data)
                 setCreator(creatorRes.data)
-                setAssets(assetRes.data)
+                setAssets(asset)
                 setLoading(false)
             } catch (error) {
                 console.log('An Error Occured: ', error)
@@ -96,7 +102,7 @@ export default function CreatorsWorks() {
                         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                             <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">
                                 <SearchInput data={assets} onResults={setFiltered} column={'title'} />
-                                <SelectInput data={assets} option={['All','Sprite','Tilesets','Background']} column={'tags'} onResults={setFiltered} placeholder='Category'/>
+                                <SelectInput data={assets} option={['All', 'Sprite', 'Tilesets', 'Background', 'Font']} column={'tags'} onResults={setFiltered} placeholder='Category' />
 
                                 {creator.id != 1 ?
                                     <Link to={creator.link} className="bg-green-600 border rounded-lg text-sm block w-[140px] ps-3 p-2.5 border-green-600 text-white hover:bg-green-800 hover:border-green-800">

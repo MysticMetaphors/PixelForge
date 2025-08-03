@@ -8,8 +8,11 @@ import About from './Pages/About';
 import Fonts from './Pages/Fonts';
 import AI from './Pages/AI';
 import CreatorsWorks from './Pages/CreatorsWorks';
-import Report from './Pages/Report';
-import Contact from './Pages/Contact';
+// import Report from './Pages/Report';
+// import Contact from './Pages/Contact';
+
+import NotFound from './Pages/Error/NotFound';
+import Forbidden from './Pages/Error/Forbidden';
 
 export default function App() {
   return (
@@ -22,9 +25,17 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/fonts" element={<Fonts />} />
         <Route path="/ai" element={<AI />} />
-        <Route path="/report" element={<Report />}/>
-        <Route path="/contact" element={<Contact />}/>
         <Route path="/works/:id" element={<CreatorsWorks />} />
+
+        {/* <Route path="/report" element={<Report />}/>
+        <Route path="/contact" element={<Contact />}/> */}
+
+
+        <Route path="/404" element={<NotFound />} />
+        <Route path="/403" element={<Forbidden />} />
+
+        <Route path='*' element={<NotFound />} />
+
       </Routes>
     </MainLayout>
   );

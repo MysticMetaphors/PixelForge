@@ -9,7 +9,6 @@ export default function Navigation() {
     }
 
     function toggleNavigation() {
-        console.log('clicked')
         const nav = document.getElementById('navbar-multi-level')
         nav.classList.toggle('hidden')
     }
