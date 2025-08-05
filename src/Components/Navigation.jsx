@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 
 export default function Navigation() {
+    function toggleDropdown(e) {
+        if (window.innerWidth >= 768) return;
+        const el = e.target;
+        const parent = el.closest("li");
+        const droplinks = parent.querySelector("#dropdownNavbar");
+        droplinks.classList.toggle("hidden");
+    }
+
     function toggleNavigation() {
         const nav = document.getElementById('navbar-multi-level')
         nav.classList.toggle('hidden')
@@ -48,7 +56,7 @@ export default function Navigation() {
                             <Link to="/" className="block py-2 px-3 hover:bg-violet-900">Home</Link>
                         </li>
                         <li className="relative group">
-                            <button className="flex gap-1 items-center w-full py-2 px-3 hover:bg-violet-900">
+                            <button onClick={toggleDropdown} className="flex gap-1 items-center w-full py-2 px-3 hover:bg-violet-900">
                                 <Link to="/gallery">Gallery</Link>
                                 <span className="material-symbols-rounded">keyboard_arrow_down</span>
                             </button>
@@ -58,7 +66,7 @@ export default function Navigation() {
                                 className="z-10 hidden group-hover:block md:absolute md:bg-violet-1000 left-0 font-normal divide-y rounded-lg shadow-sm w-44 divide-gray-600"
                             >
                                 <ul className="md:py-2 md:px-0 px-5 py-0 md:text-sm text-normal">
-                                    <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Pack</Link></li>
+                                    {/* <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Pack</Link></li> */}
                                     <li><Link to="/gallery/Sprites" className="block py-2 lg:pl-[20px] px-3">Sprites</Link></li>
                                     <li><Link to="/gallery/Tilesets" className="block py-2 lg:pl-[20px] px-3">Tilesets</Link></li>
                                     <li><Link to="/gallery/Background" className="block py-2 lg:pl-[20px] px-3">Backgrounds</Link></li>
