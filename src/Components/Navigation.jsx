@@ -55,7 +55,10 @@ export default function Navigation() {
                         <li>
                             <Link to="/" className="block py-2 px-3 hover:bg-violet-900">Home</Link>
                         </li>
-                        <li className="relative group">
+                        <li>
+                            <Link to="/gallery" className="block py-2 px-3 hover:bg-violet-900">Gallery</Link>
+                        </li>
+                        {/* <li className="relative group">
                             <button onClick={toggleDropdown} className="flex gap-1 items-center w-full py-2 px-3 hover:bg-violet-900">
                                 <Link to="/gallery">Gallery</Link>
                                 <span className="material-symbols-rounded">keyboard_arrow_down</span>
@@ -66,13 +69,13 @@ export default function Navigation() {
                                 className="z-10 hidden group-hover:block md:absolute md:bg-violet-1000 left-0 font-normal divide-y rounded-lg shadow-sm w-44 divide-gray-600"
                             >
                                 <ul className="md:py-2 md:px-0 px-5 py-0 md:text-sm text-normal">
-                                    {/* <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Pack</Link></li> */}
+                                    {/* <li><Link to="/gallery" className="block py-2 lg:pl-[20px] px-3">Pack</Link></li>
                                     <li><Link to="/gallery/Sprites" className="block py-2 lg:pl-[20px] px-3">Sprites</Link></li>
                                     <li><Link to="/gallery/Tilesets" className="block py-2 lg:pl-[20px] px-3">Tilesets</Link></li>
                                     <li><Link to="/gallery/Background" className="block py-2 lg:pl-[20px] px-3">Backgrounds</Link></li>
                                 </ul>
                             </div>
-                        </li>
+                        </li> */}
 
                         <li>
                             <Link to="/creators" className="block py-2 px-3 hover:bg-violet-900">Creators</Link>

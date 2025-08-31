@@ -85,7 +85,7 @@ export default function Welcome() {
                                 to={'/About'}
                                 className="bg-violet-900 py-[8px] px-[15px] text-white flex gap-[5px] w-fit items-center"
                             >
-                                About Us
+                                About
                                 <span className="material-symbols-rounded text-[18px]">
                                     arrow_forward
                                 </span>
