@@ -32,7 +32,7 @@ export default function AI() {
             >
                 <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
                     <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl text-white">AI Models</h1>
-                    <p className="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200"> At PixelForge, we connect you with free pixel art assets and cutting-edge AI models created by talented artists and developers. These tools are shared to help you bring your game ideas to life.</p>
+                    <p className="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200"> At PixelForge, I connect you with free pixel art assets and cutting-edge AI models created by talented artists and developers. These tools are shared to help you bring your game ideas to life.</p>
 
                     <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                         <form className="max-w-[400px] mx-auto flex flex-row gap-[8px]">

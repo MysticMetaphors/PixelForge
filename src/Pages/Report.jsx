@@ -21,7 +21,7 @@ export default function Report() {
                 <div className="flex flex-col justify-center items-center h-fit">
                     <div className="py-8 px-4  text-center lg:py-16 lg:px-12">
                         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl text-white">Report</h1>
-                        <p className="text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200"> At PixelForge we connect you with free pixel art assets and AI models created by talented artists and shared for everyone, so you can find what you need to craft your games.</p>
+                        <p className="text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-gray-200"> At PixelForge I connect you with free pixel art assets and AI models created by talented artists and shared for everyone, so you can find what you need to craft your games.</p>
                     </div>
                 </div>
             </div>
