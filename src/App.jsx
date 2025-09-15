@@ -15,6 +15,7 @@ import NotFound from './Pages/Error/NotFound';
 import Forbidden from './Pages/Error/Forbidden';
 import DashboardLayout from './Layouts/DashboardLayout';
 import Dashboard from './Pages/Dashboard/Dashboard';
+import Works from './Pages/Dashboard/works/Works';
 
 export default function App() {
   return (
@@ -40,7 +41,7 @@ export default function App() {
         </Route>
 
         <Route element={<DashboardLayout />}>
-          <Route path='/dashboard' element={<Dashboard />}/>
+          <Route path='/dashboard/works' element={<Works />}/>
         </Route>
       </Routes>
     // </MainLayout>
