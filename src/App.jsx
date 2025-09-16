@@ -13,11 +13,18 @@ import CreatorsWorks from './Pages/CreatorsWorks';
 
 import NotFound from './Pages/Error/NotFound';
 import Forbidden from './Pages/Error/Forbidden';
+import DashboardLayout from './Layouts/DashboardLayout';
+import Works from './Pages/Dashboard/Works';
+import AIDashboard from './Pages/Dashboard/AI';
+import CreatorsDashboard from './Pages/Dashboard/Creators';
+import Login from './Pages/Partials/Login';
+import ProtectedRoute from './Route Guard/ProtectedRoute';
 
 export default function App() {
   return (
-    <MainLayout>
-      <Routes>
+    // <MainLayout>
+    <Routes>
+      <Route element={<MainLayout />}>
         <Route path="/" element={<Welcome />} />
         <Route path="/gallery/:category" element={<Gallery />} />
         <Route path="/gallery" element={<Gallery />} />
@@ -26,17 +33,26 @@ export default function App() {
         <Route path="/fonts" element={<Fonts />} />
         <Route path="/ai" element={<AI />} />
         <Route path="/works/:id" element={<CreatorsWorks />} />
+        <Route path='/login' element={<Login />} />
 
         {/* <Route path="/report" element={<Report />}/>
         <Route path="/contact" element={<Contact />}/> */}
-
 
         <Route path="/404" element={<NotFound />} />
         <Route path="/403" element={<Forbidden />} />
 
         <Route path='*' element={<NotFound />} />
+      </Route>
 
-      </Routes>
-    </MainLayout>
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard/works" element={<Works />} />
+          <Route path="/dashboard/ai" element={<AIDashboard />} />
+          <Route path="/dashboard/creators" element={<CreatorsDashboard />} />
+        </Route>
+      </Route>
+
+    </Routes>
+    // </MainLayout>
   );
 }
