@@ -1,11 +1,27 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import { useState } from "react";
+import Modal from "../Components/Modal";
 
 export default function DashboardLayout() {
+    const navigate = useNavigate()
+    const [isOpen, setIsOpen] = useState(false);
 
     function toggleDropdown() {
         const dropdown = document.getElementById('dropdown-works');
         dropdown.classList.toggle('hidden');
     }
+
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+            console.error("Error logging out:", error.message);
+        } else {
+            console.log("Logged out!");
+            navigate('/')
+        }
+    };
     return (
         <>
             <nav className="fixed top-0 z-50 w-full bg-black-800 border-b border-gray-700">
@@ -45,6 +61,12 @@ export default function DashboardLayout() {
                                     </span>
                                     {/* AI */}
                                 </Link>
+                                <div onClick={() => setIsOpen(true)} className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
+                                    <span class="material-symbols-rounded">
+                                        logout
+                                    </span>
+                                    {/* AI */}
+                                </div>
                             </div>
                             {/* <div className="flex items-center">
                                 <div className="flex items-center ms-3">
@@ -143,6 +165,32 @@ export default function DashboardLayout() {
                     <Outlet />
                 </div>
             </div>
+
+            <Modal isOpen={isOpen} title={''} onClose={() => setIsOpen(false)}>
+                <div className="p-8">
+                    <h2 className="text-lg font-bold text-white mb-3">
+                        Are you sure you want to log out?
+                    </h2>
+                    <p className="text-gray-400 mb-6">
+                        You will need to log in again to access your dashboard.
+                    </p>
+
+                    <div className="flex justify-end gap-3">
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="px-4 py-2 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleLogout}
+                            className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium"
+                        >
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </>
     )
 }

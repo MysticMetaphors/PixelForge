@@ -17,36 +17,42 @@ import DashboardLayout from './Layouts/DashboardLayout';
 import Works from './Pages/Dashboard/Works';
 import AIDashboard from './Pages/Dashboard/AI';
 import CreatorsDashboard from './Pages/Dashboard/Creators';
+import Login from './Pages/Partials/Login';
+import ProtectedRoute from './Route Guard/ProtectedRoute';
 
 export default function App() {
   return (
     // <MainLayout>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Welcome />} />
-          <Route path="/gallery/:category" element={<Gallery />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/creators" element={<Creators />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/fonts" element={<Fonts />} />
-          <Route path="/ai" element={<AI />} />
-          <Route path="/works/:id" element={<CreatorsWorks />} />
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/gallery/:category" element={<Gallery />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/creators" element={<Creators />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/fonts" element={<Fonts />} />
+        <Route path="/ai" element={<AI />} />
+        <Route path="/works/:id" element={<CreatorsWorks />} />
+        <Route path='/login' element={<Login />} />
 
-          {/* <Route path="/report" element={<Report />}/>
+        {/* <Route path="/report" element={<Report />}/>
         <Route path="/contact" element={<Contact />}/> */}
 
-          <Route path="/404" element={<NotFound />} />
-          <Route path="/403" element={<Forbidden />} />
+        <Route path="/404" element={<NotFound />} />
+        <Route path="/403" element={<Forbidden />} />
 
-          <Route path='*' element={<NotFound />} />
-        </Route>
+        <Route path='*' element={<NotFound />} />
+      </Route>
 
+      <Route element={<ProtectedRoute />}>
         <Route element={<DashboardLayout />}>
-          <Route path='/dashboard/works' element={<Works />}/>
-          <Route path='/dashboard/ai' element={<AIDashboard />}/>
-          <Route path='/dashboard/creators' element={<CreatorsDashboard />}/>
+          <Route path="/dashboard/works" element={<Works />} />
+          <Route path="/dashboard/ai" element={<AIDashboard />} />
+          <Route path="/dashboard/creators" element={<CreatorsDashboard />} />
         </Route>
-      </Routes>
+      </Route>
+
+    </Routes>
     // </MainLayout>
   );
 }
