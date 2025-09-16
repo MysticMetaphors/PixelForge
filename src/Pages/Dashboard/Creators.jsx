@@ -1,10 +1,41 @@
-import { useState } from "react";
-import Dropdown from "../../../Components/Dropdown";
-import Modal from "../../../Components/Modal";
-import SearchInput from "../../../Components/SearchInput";
+import { useEffect, useState } from "react";
+import Dropdown from "../../Components/Dropdown";
+import Modal from "../../Components/Modal";
+import SearchInput from "../../Components/SearchInput";
+import { formatDate } from "../../Global";
+import { supabase } from "../../supabaseClient";
 
-export default function AI() {
+export default function Creators() {
     const [ModalOpen, setModalOpen] = useState(false);
+    const [creators, setCreator] = useState([])
+    // const [filteredCreators, setFiltered] = useState([]); //SearchInput
+    // const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const creatorRes = await supabase.from('creators').select('*')
+                if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error);
+                setCreator(creatorRes.data)
+                // setLoading(false)
+            } catch (error) {
+                console.log('An Error Occured: ', error)
+            }
+        }
+
+        fetchData()
+    }, [])
+
+    function get_image(img) {
+        const imageUrl = supabase
+            .storage
+            .from('images')
+            .getPublicUrl(img)
+            .data
+            .publicUrl;
+
+        return imageUrl
+    }
 
     return (
         <>
@@ -141,7 +172,7 @@ export default function AI() {
                                     type="button"
                                     className="self-right bg-violet-900 hover:bg-violet-800 text-white px-4 py-2 rounded-lg text-sm font-medium"
                                 >
-                                    Add Model
+                                    Add Creator
                                 </button>
                             </div>
                         </div>
@@ -149,23 +180,22 @@ export default function AI() {
                             <thead class="text-xs text-gray-700 uppercase bg-black-800 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
-                                        Icon
+                                        Avatar
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Model
+                                        Name
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Description
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Type
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Open source
+                                        <span class="material-symbols-rounded">
+                                            link
+                                        </span>
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         <span class="material-symbols-rounded">
-                                            link
+                                            calendar_month
                                         </span>
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -174,29 +204,26 @@ export default function AI() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.from({ length: 10 }, (_, i) => (
+                                {creators.map((creator) => (
                                     <tr class="bg-violet-950">
                                         <td class="px-6 py-4">
-                                            <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+                                            <img className="w-8 h-8 rounded-full" src={get_image(creator.image)} alt="user photo" />
                                         </td>
                                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Bloxal
+                                            {creator.name}
                                         </th>
                                         <td class="px-6 py-4">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit...
+                                            {creator.description.length > 55 ? `${creator.description.slice(0, 55)}...` : creator.description}
                                         </td>
                                         <td class="px-6 py-4">
-                                            <span className="font-medium px-2.5 py-0.5 rounded bg-violet-900 text-violet-300">
-                                                generator
-                                            </span>
+                                            <a href={creator.link}>
+                                                <span class="material-symbols-rounded cursor-pointer">
+                                                    open_in_new
+                                                </span>
+                                            </a>
                                         </td>
                                         <td class="px-6 py-4">
-                                            False
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="material-symbols-rounded cursor-pointer">
-                                                open_in_new
-                                            </span>
+                                            {formatDate(creator.timestamp)}
                                         </td>
                                         <td class="px-6 py-4 flex justify-end">
                                             <Dropdown />

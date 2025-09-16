@@ -14,9 +14,9 @@ import CreatorsWorks from './Pages/CreatorsWorks';
 import NotFound from './Pages/Error/NotFound';
 import Forbidden from './Pages/Error/Forbidden';
 import DashboardLayout from './Layouts/DashboardLayout';
-import Works from './Pages/Dashboard/works/Works';
-import AIDashboard from './Pages/Dashboard/works/AI';
-import CreatorsDashboard from './Pages/Dashboard/works/Creators';
+import Works from './Pages/Dashboard/Works';
+import AIDashboard from './Pages/Dashboard/AI';
+import CreatorsDashboard from './Pages/Dashboard/Creators';
 
 export default function App() {
   return (

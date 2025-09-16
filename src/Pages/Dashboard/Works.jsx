@@ -1,10 +1,55 @@
-import { useState } from "react";
-import Dropdown from "../../../Components/Dropdown";
-import Modal from "../../../Components/Modal";
-import SearchInput from "../../../Components/SearchInput";
+import { useEffect, useState } from "react";
+import Dropdown from "../../Components/Dropdown";
+import Modal from "../../Components/Modal";
+import SearchInput from "../../Components/SearchInput";
+import { supabase } from "../../supabaseClient";
 
 export default function Works() {
     const [ModalOpen, setModalOpen] = useState(false);
+    const [works, setWorks] = useState([]);
+    // const [filteredWorks, setFiltered] = useState([]); //SearchInput
+    const [creator, setCreators] = useState([]);
+    // const [loading, setLoading] = useState(true);
+
+    // const category = useParams();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [assetRes, creatorRes] = await Promise.all([
+                    supabase.from('works').select('*'),
+                    supabase.from('creators').select('*'),
+                ])
+
+                if (assetRes.error) throw new Error('An Error Occured: ', assetRes.error)
+                if (creatorRes.error) throw new Error('An Error Occured: ', creatorRes.error)
+
+                setWorks(assetRes.data)
+                setCreators(creatorRes.data)
+                // setLoading(false)
+            } catch (error) {
+                console.log('An Error Occured: ', error)
+            }
+        }
+
+        fetchData()
+    }, [])
+
+    function get_image(img) {
+        const imageUrl = supabase
+            .storage
+            .from('images')
+            .getPublicUrl(img)
+            .data
+            .publicUrl;
+
+        return imageUrl
+    }
+
+    function get_creator(id) {
+        const findItem = creator.find((item) => item.id == id)
+        return <img className="w-8 h-8 rounded-full" src={get_image(findItem.image)} alt={findItem.name} />
+    }
 
     return (
         <>
@@ -173,24 +218,26 @@ export default function Works() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.from({ length: 10 }, (_, i) => (
+                                {works.map((work) => (
                                     <tr class="bg-violet-950">
                                         <td class="px-6 py-4">
-                                            Silver
+                                            {work.title}
                                         </td>
                                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Apple MacBook Pro 17"
+                                            {get_creator(work.creator)}
                                         </th>
                                         <td class="px-6 py-4">
-                                            CC0
+                                            {work.license.length > 55 ? `${work.license.slice(0, 55)}...` : work.license}
                                         </td>
                                         <td class="px-6 py-4">
-                                            <span class="material-symbols-rounded cursor-pointer">
-                                                open_in_new
-                                            </span>
+                                            <a href={work.link}>
+                                                <span class="material-symbols-rounded cursor-pointer">
+                                                    open_in_new
+                                                </span>
+                                            </a>
                                         </td>
                                         <td class="px-6 py-4">
-                                            False
+                                            {work.generated ? 'True' : 'False'}
                                         </td>
                                         <td class="px-6 py-4 flex justify-end">
                                             <Dropdown />

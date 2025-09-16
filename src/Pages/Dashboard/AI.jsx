@@ -1,10 +1,36 @@
-import { useState } from "react";
-import Dropdown from "../../../Components/Dropdown";
-import Modal from "../../../Components/Modal";
-import SearchInput from "../../../Components/SearchInput";
+import { useEffect, useState } from "react";
+import Dropdown from "../../Components/Dropdown";
+import Modal from "../../Components/Modal";
+import SearchInput from "../../Components/SearchInput";
+import { supabase } from "../../supabaseClient";
 
-export default function Creators() {
+export default function AI() {
     const [ModalOpen, setModalOpen] = useState(false);
+    const [ai_models, setModel] = useState([])
+    // const [filteredModels, setFiltered] = useState([])
+    // const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const aiRes = await supabase.from('ai_models').select('*')
+            if (aiRes.error) throw new Error('An Error Occured: ', aiRes.error)
+            setModel(aiRes.data)
+            // setLoading(false)
+        }
+
+        fetchData()
+    }, [])
+
+    function get_image(img) {
+        const imageUrl = supabase
+            .storage
+            .from('images')
+            .getPublicUrl(img)
+            .data
+            .publicUrl;
+
+        return imageUrl
+    }
 
     return (
         <>
@@ -129,8 +155,8 @@ export default function Creators() {
                 </Modal>
 
                 <div className="">
-                    {/* <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Alternative</button> */}
-                    <div class="relative overflow-x-auto shadow-md bg-black-800">
+                    {/* <button type="button" className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Alternative</button> */}
+                    <div className="relative overflow-x-auto shadow-md bg-black-800">
                         <div className="p-5 pb-2 flex justify-between">
                             <div className="w-full">
                                 <SearchInput />
@@ -141,58 +167,66 @@ export default function Creators() {
                                     type="button"
                                     className="self-right bg-violet-900 hover:bg-violet-800 text-white px-4 py-2 rounded-lg text-sm font-medium"
                                 >
-                                    Add Creator
+                                    Add Model
                                 </button>
                             </div>
                         </div>
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-black-800 dark:text-gray-400">
+                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead className="text-xs text-gray-700 uppercase bg-black-800 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Avatar
+                                    <th scope="col" className="px-6 py-3">
+                                        Icon
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Name
+                                    <th scope="col" className="px-6 py-3">
+                                        Model
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" className="px-6 py-3">
                                         Description
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        <span class="material-symbols-rounded">
+                                    <th scope="col" className="px-6 py-3">
+                                        Type
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Open source
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        <span className="material-symbols-rounded">
                                             link
                                         </span>
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        <span class="material-symbols-rounded">
-                                            calendar_month
-                                        </span>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" className="px-6 py-3">
 
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.from({ length: 10 }, (_, i) => (
-                                    <tr class="bg-violet-950">
-                                        <td class="px-6 py-4">
-                                            <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+                                {ai_models.map((ai) => (
+                                    <tr className="bg-violet-950">
+                                        <td className="px-6 py-4">
+                                            <img className="w-8 h-8 rounded-full" src={ai.icon} alt={ai.name} />
                                         </td>
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            John Doe
+                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {ai.name}
                                         </th>
-                                        <td class="px-6 py-4">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit...
+                                        <td className="px-6 py-4">
+                                            {ai.description.length > 55 ? `${ai.description.slice(0, 55)}...` : ai.description}
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <span class="material-symbols-rounded cursor-pointer">
-                                                open_in_new
+                                        <td className="px-6 py-4">
+                                            <span className="font-medium px-2.5 py-0.5 rounded bg-violet-900 text-violet-300">
+                                                {ai.type}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            September 14, 2024
+                                        <td className="px-6 py-4">
+                                            {ai.opensource ? 'True' : 'False'}
                                         </td>
-                                        <td class="px-6 py-4 flex justify-end">
+                                        <td className="px-6 py-4">
+                                            <a href={ai.link}>
+                                                <span className="material-symbols-rounded cursor-pointer">
+                                                    open_in_new
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td className="px-6 py-4 flex justify-end">
                                             <Dropdown />
                                         </td>
                                     </tr>
