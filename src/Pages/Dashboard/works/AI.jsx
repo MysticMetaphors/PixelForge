@@ -3,7 +3,7 @@ import Dropdown from "../../../Components/Dropdown";
 import Modal from "../../../Components/Modal";
 import SearchInput from "../../../Components/SearchInput";
 
-export default function Works() {
+export default function AI() {
     const [ModalOpen, setModalOpen] = useState(false);
 
     return (
@@ -141,7 +141,7 @@ export default function Works() {
                                     type="button"
                                     className="self-right bg-violet-900 hover:bg-violet-800 text-white px-4 py-2 rounded-lg text-sm font-medium"
                                 >
-                                    Add Work
+                                    Add Model
                                 </button>
                             </div>
                         </div>
@@ -149,13 +149,19 @@ export default function Works() {
                             <thead class="text-xs text-gray-700 uppercase bg-black-800 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
-                                        Title
+                                        Icon
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Creator
+                                        Model
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        License
+                                        Description
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Type
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Open source
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         <span class="material-symbols-rounded">
@@ -163,12 +169,7 @@ export default function Works() {
                                         </span>
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        <span class="material-symbols-rounded">
-                                            auto_awesome
-                                        </span>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        <span class="sr-only">Edit</span>
+
                                     </th>
                                 </tr>
                             </thead>
@@ -176,21 +177,26 @@ export default function Works() {
                                 {Array.from({ length: 10 }, (_, i) => (
                                     <tr class="bg-violet-950">
                                         <td class="px-6 py-4">
-                                            Silver
+                                            <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
                                         </td>
                                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Apple MacBook Pro 17"
+                                            Bloxal
                                         </th>
                                         <td class="px-6 py-4">
-                                            CC0
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit...
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span className="font-medium px-2.5 py-0.5 rounded bg-violet-900 text-violet-300">
+                                                generator
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            False
                                         </td>
                                         <td class="px-6 py-4">
                                             <span class="material-symbols-rounded cursor-pointer">
                                                 open_in_new
                                             </span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            False
                                         </td>
                                         <td class="px-6 py-4 flex justify-end">
                                             <Dropdown />

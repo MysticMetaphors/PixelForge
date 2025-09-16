@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export default function DashboardLayout() {
 
@@ -27,24 +27,24 @@ export default function DashboardLayout() {
 
                         <div className="flex items-center">
                             <div className="flex flex-row mx-4">
-                                <div className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
+                                <Link to={'/dashboard/creators'} className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
                                     <span class="material-symbols-rounded">
                                         engineering
                                     </span>
                                     {/* Creator */}
-                                </div>
-                                <div className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
+                                </Link>
+                                <Link to={'/dashboard/works'} className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
                                     <span class="material-symbols-rounded">
                                         widgets
                                     </span>
                                     {/* Works */}
-                                </div>
-                                <div className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
+                                </Link>
+                                <Link to={'/dashboard/ai'} className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
                                     <span class="material-symbols-rounded">
                                         auto_awesome
                                     </span>
                                     {/* AI */}
-                                </div>
+                                </Link>
                             </div>
                             <div className="flex items-center">
                                 <div className="flex items-center ms-3">

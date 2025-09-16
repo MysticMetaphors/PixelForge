@@ -14,8 +14,9 @@ import CreatorsWorks from './Pages/CreatorsWorks';
 import NotFound from './Pages/Error/NotFound';
 import Forbidden from './Pages/Error/Forbidden';
 import DashboardLayout from './Layouts/DashboardLayout';
-import Dashboard from './Pages/Dashboard/Dashboard';
 import Works from './Pages/Dashboard/works/Works';
+import AIDashboard from './Pages/Dashboard/works/AI';
+import CreatorsDashboard from './Pages/Dashboard/works/Creators';
 
 export default function App() {
   return (
@@ -42,6 +43,8 @@ export default function App() {
 
         <Route element={<DashboardLayout />}>
           <Route path='/dashboard/works' element={<Works />}/>
+          <Route path='/dashboard/ai' element={<AIDashboard />}/>
+          <Route path='/dashboard/creators' element={<CreatorsDashboard />}/>
         </Route>
       </Routes>
     // </MainLayout>
