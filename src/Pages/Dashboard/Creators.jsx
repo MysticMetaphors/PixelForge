@@ -8,8 +8,18 @@ import { supabase } from "../../supabaseClient";
 export default function Creators() {
     const [ModalOpen, setModalOpen] = useState(false);
     const [creators, setCreator] = useState([])
+    const [form, setForm] = useState({
+        image: null,
+        name: '',
+        link: '',
+        description: '',
+    })
     // const [filteredCreators, setFiltered] = useState([]); //SearchInput
     // const [loading, setLoading] = useState(true)
+
+    function handleChange(e) {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,77 +47,77 @@ export default function Creators() {
         return imageUrl
     }
 
+    function handleSubmit(e) {
+        e.preventDefault()
+        // console.log(form)
+        try {
+            const insert = async () => {
+                const { data: storageData, error: storageError } = await supabase.storage
+                    .from("images")
+                    .upload(`${form.image.name}`, form.image, {
+                        cacheControl: "3600",
+                        upsert: false,
+                    });
+
+                if (storageError) {
+                    console.error("Storage upload error:", storageError.message);
+                    return;
+                }
+
+                const { data, error } = await supabase.from('creators').insert([{
+                    image: form.image.name,
+                    name: form.name,
+                    link: form.link,
+                    description: form.description,
+                }]);
+
+                setForm({
+                    image: null,
+                    name: '',
+                    link: '',
+                    description: '',
+                })
+                setModalOpen(false)
+            };
+
+            insert()
+        } catch (error) {
+            console.log('Unexpected Error occured!')
+        }
+
+    }
+
+    function renameImage(file) {
+        if (!file) return null;
+
+        const timestamp = Date.now();
+        const random = Math.floor(Math.random() * 100000);
+        const ext = file.name.split(".").pop();
+
+        const newName = `upload_${timestamp}_${random}.${ext}`;
+        return new File([file], newName, { type: file.type });
+    }
+
     return (
         <>
             <div>
                 <Modal title={'Add new work'} isOpen={ModalOpen} onClose={() => setModalOpen(false)}>
-                    <form className="p-6 max-h-[70vh] overflow-y-auto">
+                    <form className="p-6 max-h-[70vh] overflow-y-auto" onSubmit={handleSubmit}>
                         <div className="mb-6">
                             <label
-                                htmlFor="title"
+                                htmlFor="name"
                                 className="block mb-2 text-sm font-medium text-white"
                             >
-                                Title
+                                Name
                             </label>
                             <input
                                 type="text"
-                                name="title"
+                                name="name"
+                                value={form.name}
+                                onChange={handleChange}
                                 className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Enter title"
                             />
-                        </div>
-
-                        <div className="mb-6">
-                            <label
-                                htmlFor="creator"
-                                className="block mb-2 text-sm font-medium text-white"
-                            >
-                                Creator
-                            </label>
-                            <select
-                                name="creator"
-                                className="bg-black-700 border text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5 border-gray-600 text-gray-400"
-                            >
-                                <option hidden value="">
-                                    Select Creator
-                                </option>
-                                <option>Value</option>
-                            </select>
-                        </div>
-
-                        <div className="w-full flex gap-2 flex-wrap mb-6">
-                            {["asset tag", "asset tag", "asset tag"].map((tag, i) => (
-                                <span
-                                    key={i}
-                                    className="w-fit font-medium px-2.5 py-0.5 rounded bg-green-900 text-green-300"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-
-                        <div className="mb-6">
-                            <label
-                                htmlFor="tags"
-                                className="block mb-2 text-sm font-medium text-white"
-                            >
-                                Tags
-                            </label>
-
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    name="tags"
-                                    className="flex-1 bg-black-700 border text-sm rounded-lg block p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="Add tags"
-                                />
-                                <button
-                                    type="button"
-                                    className="bg-violet-900 hover:bg-violet-800 text-white px-4 py-2 rounded-lg text-sm font-medium"
-                                >
-                                    Add
-                                </button>
-                            </div>
                         </div>
 
                         <div className="mb-6">
@@ -120,6 +130,8 @@ export default function Creators() {
                             <input
                                 type="text"
                                 name="link"
+                                value={form.link}
+                                onChange={handleChange}
                                 className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="https://example.com"
                             />
@@ -127,24 +139,45 @@ export default function Creators() {
 
                         <div className="mb-6">
                             <label
-                                htmlFor="license"
+                                htmlFor="description"
                                 className="block mb-2 text-sm font-medium text-white"
                             >
-                                License
+                                Description
                             </label>
                             <textarea
-                                name="license"
+                                name="description"
                                 rows="4"
+                                value={form.description}
+                                onChange={handleChange}
                                 className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Enter license details"
+                                placeholder="Enter description"
                             ></textarea>
                         </div>
+
+                        <div className="mb-6">
+                            <label
+                                htmlFor="image"
+                                className="block mb-2 text-sm font-medium text-white"
+                            >
+                                Image
+                            </label>
+                            <input
+                                type="file"
+                                name="image"
+                                id="image"
+                                accept="image/*"
+                                onChange={(e) => setForm({ ...form, image: renameImage(e.target.files[0]) })}
+                                className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 text-white focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-violet-900 file:text-white hover:file:bg-violet-800"
+                            />
+                        </div>
+
 
                         {/* Footer */}
                         <div className="flex justify-end gap-2 border-t border-gray-700 pt-4">
                             <button
                                 type="button"
-                                onClick={() => setModalOpen(false)}
+                                // onClick={() => setModalOpen(false)}
+                                onClick={() => console.log(form)}
                                 className="px-4 py-2 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700"
                             >
                                 Cancel

@@ -1,14 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Dropdown from "../../Components/Dropdown";
 import Modal from "../../Components/Modal";
 import SearchInput from "../../Components/SearchInput";
 import { supabase } from "../../supabaseClient";
 
 export default function AI() {
+    const tags_btn = useRef()
     const [ModalOpen, setModalOpen] = useState(false);
     const [ai_models, setModel] = useState([])
+    const [form, setForm] = useState({
+        name: '',
+        icon: '',
+        description: '',
+        type: '',
+        link: '',
+        opensource: false,
+    })
     // const [filteredModels, setFiltered] = useState([])
     // const [loading, setLoading] = useState(true)
+
+    function handleChange(e) {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,88 +34,154 @@ export default function AI() {
         fetchData()
     }, [])
 
-    function get_image(img) {
-        const imageUrl = supabase
-            .storage
-            .from('images')
-            .getPublicUrl(img)
-            .data
-            .publicUrl;
+    function handleSubmit(e) {
+        e.preventDefault()
+        // console.log(form)
+        try {
+            const insert = async () => {
+                const { data, error } = await supabase.from('ai_models').insert(form);
+                setForm({
+                    name: '',
+                    icon: '',
+                    description: '',
+                    type: '',
+                    link: '',
+                    opensource: false,
+                })
+                setModalOpen(false)
+                
+                if (error) {
+                    console.log(error.message)
+                }
+            };
 
-        return imageUrl
+            
+
+            insert()
+        } catch (error) {
+            console.log('Unexpected Error occured!')
+        }
+
     }
 
     return (
         <>
             <div>
-                <Modal title={'Add new work'} isOpen={ModalOpen} onClose={() => setModalOpen(false)}>
-                    <form className="p-6 max-h-[70vh] overflow-y-auto">
+                <Modal title={'Add new Model'} isOpen={ModalOpen} onClose={() => setModalOpen(false)}>
+                    <form className="p-6 max-h-[70vh] overflow-y-auto" onSubmit={handleSubmit}>
                         <div className="mb-6">
                             <label
-                                htmlFor="title"
+                                htmlFor="name"
                                 className="block mb-2 text-sm font-medium text-white"
                             >
-                                Title
+                                Model
                             </label>
                             <input
                                 type="text"
-                                name="title"
+                                name="name"
+                                value={form.name}
+                                onChange={handleChange}
                                 className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Enter title"
+                                placeholder="Enter model"
                             />
                         </div>
 
                         <div className="mb-6">
                             <label
-                                htmlFor="creator"
+                                htmlFor="icon"
                                 className="block mb-2 text-sm font-medium text-white"
                             >
-                                Creator
+                                Icon URL
                             </label>
-                            <select
-                                name="creator"
-                                className="bg-black-700 border text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block pr-[30px] p-2.5 border-gray-600 text-gray-400"
-                            >
-                                <option hidden value="">
-                                    Select Creator
-                                </option>
-                                <option>Value</option>
-                            </select>
-                        </div>
-
-                        <div className="w-full flex gap-2 flex-wrap mb-6">
-                            {["asset tag", "asset tag", "asset tag"].map((tag, i) => (
-                                <span
-                                    key={i}
-                                    className="w-fit font-medium px-2.5 py-0.5 rounded bg-green-900 text-green-300"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
+                            <input
+                                type="text"
+                                name="icon"
+                                value={form.icon}
+                                onChange={handleChange}
+                                className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="https://example.com"
+                            />
                         </div>
 
                         <div className="mb-6">
                             <label
-                                htmlFor="tags"
+                                htmlFor="description"
                                 className="block mb-2 text-sm font-medium text-white"
                             >
-                                Tags
+                                Description
                             </label>
+                            <textarea
+                                name="description"
+                                value={form.description}
+                                onChange={handleChange}
+                                rows="4"
+                                className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter description"
+                            ></textarea>
+                        </div>
 
-                            <div className="flex gap-2">
+                        {/* <div className="w-full flex gap-2 flex-wrap mb-6">
+                            {form.tags.map((tag, i) => (
+                                <span
+                                    key={i}
+                                    className="w-fit font-medium px-2.5 py-0.5 rounded bg-green-900 text-green-300 text-center flex items-center gap-2"
+                                >
+                                    {tag}
+                                    <span
+                                        onClick={() =>
+                                            setForm(prev => ({
+                                                ...prev,
+                                                tags: prev.tags.filter((_, idx) => idx !== i),
+                                            }))
+                                        }
+                                        className="material-symbols-rounded cursor-pointer hover:text-red-400"
+                                        style={{ fontSize: "18px" }}
+                                    >
+                                        close
+                                    </span>
+                                </span>
+                            ))}
+                        </div> */}
+
+                        <div className="mb-6">
+                            <label
+                                htmlFor="type"
+                                className="block mb-2 text-sm font-medium text-white"
+                            >
+                                Type
+                            </label>
+                            <input
+                                type="text"
+                                name="type"
+                                value={form.type}
+                                onChange={handleChange}
+                                className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="type"
+                            />
+
+                            {/* <div className="flex gap-2">
                                 <input
+                                    ref={tags_btn}
                                     type="text"
                                     name="tags"
                                     className="flex-1 bg-black-700 border text-sm rounded-lg block p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Add tags"
                                 />
+
                                 <button
                                     type="button"
+                                    onClick={() => {
+                                        const newTag = tags_btn.current.value.trim();
+                                        if (!newTag) return;
+                                        setForm(prev => ({ ...prev, tags: [...prev.tags, newTag] }));
+                                        tags_btn.current.value = "";
+                                    }}
                                     className="bg-violet-900 hover:bg-violet-800 text-white px-4 py-2 rounded-lg text-sm font-medium"
                                 >
                                     Add
                                 </button>
-                            </div>
+
+                            </div> */}
                         </div>
 
                         <div className="mb-6">
@@ -114,25 +193,12 @@ export default function AI() {
                             </label>
                             <input
                                 type="text"
+                                value={form.link}
+                                onChange={handleChange}
                                 name="link"
                                 className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="https://example.com"
                             />
-                        </div>
-
-                        <div className="mb-6">
-                            <label
-                                htmlFor="license"
-                                className="block mb-2 text-sm font-medium text-white"
-                            >
-                                License
-                            </label>
-                            <textarea
-                                name="license"
-                                rows="4"
-                                className="bg-black-700 border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Enter license details"
-                            ></textarea>
                         </div>
 
                         {/* Footer */}
