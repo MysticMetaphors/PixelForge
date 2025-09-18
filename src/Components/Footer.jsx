@@ -78,8 +78,22 @@ export default function Footer() {
                     </div>
                     <hr className="my-6 sm:mx-auto border-gray-500 lg:my-8" />
                     <div className="sm:flex sm:items-center sm:justify-between">
-                        <span className="text-sm sm:text-center text-gray-400">© 2023 <Link href="/" className="hover:underline">PixelForge™</Link>. All Rights Reserved.
+                        <span className="text-sm sm:text-center text-gray-400">
+                            © 2023 <Link href="/" className="hover:underline">PixelForge™</Link>. All Rights Reserved.
                         </span>
+                        <a href="https://supabase.com" target="_blank" rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white/5 transition-colors">
+                            <img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNfSt0xBDTUkGqyLPvZa5PBHYNVg-WJ2OWPQ&s"
+                                alt="Supabase logo"
+                                class="w-8 h-8 rounded-md object-contain"
+                                draggable="false"
+                            />
+                            <span class="text-sm text-white font-medium">
+                                Powered by Supabase
+                            </span>
+                        </a>
+
                         {/* <div className="flex mt-4 sm:justify-center sm:mt-0">
                             <a href="https://www.facebook.com/vonbryan.banal.1" className="text-gray-500 hover:text-white">
                                 <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">

@@ -61,6 +61,12 @@ export default function DashboardLayout() {
                                     </span>
                                     {/* AI */}
                                 </Link>
+                                <Link to={'/dashboard/ai'} className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
+                                    <span class="material-symbols-rounded">
+                                        slab_serif
+                                    </span>
+                                    {/* AI */}
+                                </Link>
                                 <div onClick={() => setIsOpen(true)} className="cursor-pointer hover:bg-violet-900 p-2 text-20 text-gray-300 flex gap-2 align-center">
                                     <span class="material-symbols-rounded">
                                         logout
